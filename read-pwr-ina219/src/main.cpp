@@ -1,6 +1,7 @@
 //#include <system.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <signal.h>
 #include <sys/wait.h>
 #include <iostream>
@@ -43,9 +44,10 @@ int main()
   //FILE* i2cDevFile;
   int i2cDevFile;
   int addr = 0x40;
-  //__u8 tgtRegister = 0x02;
+  __u8 tgtRegister = 0x02;
   __s32 res;
   char buf[10];
+  memset(buf, 0, sizeof(buf));
 
   // open i2c bus
   i2cDevFile=open("/dev/i2c-1",O_RDWR);
@@ -53,17 +55,19 @@ int main()
     cout << "Failed to open i2c-1" << endl;
     exit(1);
   }
+  // tell i2c bus what device address to address
   if (ioctl(i2cDevFile, I2C_SLAVE, addr) < 0) {
     /* ERROR HANDLING; you can check errno to see what went wrong */
+    cout << "Failed to set addr 0x40" << endl;
     exit(2);
   }
 
-  buf[0]=0x02;
+  buf[0]=tgtRegister;
   res = write(i2cDevFile,buf,1); 
- 
+  buf[0]=0x00;
   res = read(i2cDevFile,buf,1);
   if (res==1) {  
-    cout << buf[0] << endl; 
+    cout << "byte read success:" << buf[0] << endl; 
   }
 
   /* Using SMBus commands */

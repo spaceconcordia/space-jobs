@@ -47,7 +47,7 @@ int main()
   logMsgVal.append("bus_v: ");
   lastLen=logMsgVal.length()+1;
   logMsgVal.append(readBuf);
-  logMsgVal.erase(logMsgVal.find(" ",lastLen),string::npos);
+  logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
   logMsgVal.append(" :: ");
   memset(readBuf, 0, sizeof(readBuf));
 
@@ -61,7 +61,7 @@ int main()
   logMsgVal.append("shunt_v: ");
   lastLen=logMsgVal.length()+1;
   logMsgVal.append(readBuf);
-  logMsgVal.erase(logMsgVal.find(" ",lastLen),string::npos);
+  logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
   logMsgVal.append(" :: ");
   memset(readBuf, 0, sizeof(readBuf));
 
@@ -75,7 +75,7 @@ int main()
   logMsgVal.append("shunt_i: ");
   lastLen=logMsgVal.length()+1;
   logMsgVal.append(readBuf);
-  logMsgVal.erase(logMsgVal.find(" ",lastLen),string::npos);
+  logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
   logMsgVal.append(" :: ");
   memset(readBuf, 0, sizeof(readBuf));
 

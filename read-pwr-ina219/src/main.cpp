@@ -56,7 +56,7 @@ int main()
     fgets(readBuf,10,inaSysFile);
     fclose(inaSysFile);
   } else {
-    strncpy(readBuf,"readfail\0",9);
+    strncpy(readBuf,"readfail\n",9);
   }  
   logMsgVal.append("shunt_v: ");
   lastLen=logMsgVal.length()+1;
@@ -70,7 +70,7 @@ int main()
     fgets(readBuf,10,inaSysFile);
     fclose(inaSysFile);
   } else {
-    strncpy(readBuf,"readfail\0",9);
+    strncpy(readBuf,"readfail\n",9);
   }
   logMsgVal.append("shunt_i: ");
   lastLen=logMsgVal.length()+1;
@@ -84,10 +84,11 @@ int main()
     fgets(readBuf,10,inaSysFile);
     fclose(inaSysFile);
   } else {
-    strncpy(readBuf,"readfail\0",9);
+    strncpy(readBuf,"readfail\n",9);
   }
   logMsgVal.append("power: ");
   logMsgVal.append(readBuf);
+  logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
   memset(readBuf, 0, sizeof(readBuf));
 
   // write to log via shakespeare

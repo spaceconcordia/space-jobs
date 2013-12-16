@@ -35,6 +35,7 @@ int main()
 
   FILE* inaSysFile;
   char readBuf[10];
+  size_t lastLen=0;
 
   inaSysFile=fopen("/sys/bus/i2c/devices/1-0040/in1_input","r");
   if (inaSysFile!=NULL) {
@@ -44,7 +45,9 @@ int main()
     strncpy(readBuf,"readfail\0",9);
   }
   logMsgVal.append("bus_v: ");
-  logMsgVal.append(readBuf,0,9);
+  lastLen=logMsgVal.length()+1;
+  logMsgVal.append(readBuf);
+  logMsgVal.erase(logMsgVal.find(" ",lastLen),string::npos);
   logMsgVal.append(" :: ");
   memset(readBuf, 0, sizeof(readBuf));
 
@@ -56,7 +59,9 @@ int main()
     strncpy(readBuf,"readfail\0",9);
   }  
   logMsgVal.append("shunt_v: ");
-  logMsgVal.append(readBuf,0,9);
+  lastLen=logMsgVal.length()+1;
+  logMsgVal.append(readBuf);
+  logMsgVal.erase(logMsgVal.find(" ",lastLen),string::npos);
   logMsgVal.append(" :: ");
   memset(readBuf, 0, sizeof(readBuf));
 
@@ -68,7 +73,9 @@ int main()
     strncpy(readBuf,"readfail\0",9);
   }
   logMsgVal.append("shunt_i: ");
-  logMsgVal.append(readBuf,0,9);
+  lastLen=logMsgVal.length()+1;
+  logMsgVal.append(readBuf);
+  logMsgVal.erase(logMsgVal.find(" ",lastLen),string::npos);
   logMsgVal.append(" :: ");
   memset(readBuf, 0, sizeof(readBuf));
 
@@ -80,7 +87,7 @@ int main()
     strncpy(readBuf,"readfail\0",9);
   }
   logMsgVal.append("power: ");
-  logMsgVal.append(readBuf,0,9);
+  logMsgVal.append(readBuf);
   memset(readBuf, 0, sizeof(readBuf));
 
   // write to log via shakespeare

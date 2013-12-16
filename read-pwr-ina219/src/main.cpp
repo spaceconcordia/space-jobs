@@ -42,7 +42,7 @@ int main()
     fgets(readBuf,10,inaSysFile);
     fclose(inaSysFile);
   } else {
-    strncpy(readBuf,"readfail\0",9);
+    strncpy(readBuf,"readfail\n",9);
   }
   logMsgVal.append("bus_v: ");
   lastLen=logMsgVal.length()+1;

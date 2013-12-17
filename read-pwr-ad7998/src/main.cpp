@@ -30,27 +30,68 @@ int main()
   // and instantiated
   // Channels 1,3,5,7 are grounded
   // DEV_FILES:
-  //  /sys/bus/i2c/devices/1-0023/iio:device./in_voltage2_raw : channel 2 - battery thermistor1 voltage
-  //  /sys/bus/i2c/devices/1-0023/iio:device./in_voltage4_raw : channel 4 - battery thermistor2 voltage
-  //  /sys/bus/i2c/devices/1-0023/iio:device./in_voltage6_raw : channel 6 - solar panel1_3 voltage divider
-  //  /sys/bus/i2c/devices/1-0023/iio:device./in_voltage8_raw : channel 8 - solar panel2_4 voltage divider
+  //  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage2_raw : channel 2 - battery thermistor1 voltage
+  //  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage4_raw : channel 4 - battery thermistor2 voltage
+  //  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage6_raw : channel 6 - solar panel1_3 voltage divider
+  //  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage8_raw : channel 8 - solar panel2_4 voltage divider
 
   FILE* adSysFile;
   char readBuf[10];
   size_t lastLen=0;
 
-  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device./in_voltage2_raw","r");
+  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device3/in_voltage2_raw","r");
   if (adSysFile!=NULL) {
     fgets(readBuf,10,adSysFile);
     fclose(adSysFile);
   } else {
     strncpy(readBuf,"readfail\n",9);
   }
-  logMsgVal.append("v: ");
+  logMsgVal.append("bat-thrm-v1 ");
   lastLen=logMsgVal.length()+1;
   logMsgVal.append(readBuf);
   logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
   logMsgVal.append(" :: ");
+  memset(readBuf, 0, sizeof(readBuf));
+
+  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device3/in_voltage4_raw","r");
+  if (adSysFile!=NULL) {
+    fgets(readBuf,10,adSysFile);
+    fclose(adSysFile);
+  } else {
+    strncpy(readBuf,"readfail\n",9);
+  }
+  logMsgVal.append("bat-thrm-v2 ");
+  lastLen=logMsgVal.length()+1;
+  logMsgVal.append(readBuf);
+  logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
+  logMsgVal.append(" :: ");
+  memset(readBuf, 0, sizeof(readBuf));
+
+  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device3/in_voltage6_raw","r");
+  if (adSysFile!=NULL) {
+    fgets(readBuf,10,adSysFile);
+    fclose(adSysFile);
+  } else {
+    strncpy(readBuf,"readfail\n",9);
+  }
+  logMsgVal.append("sp1-3-v ");
+  lastLen=logMsgVal.length()+1;
+  logMsgVal.append(readBuf);
+  logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
+  logMsgVal.append(" :: ");
+  memset(readBuf, 0, sizeof(readBuf));
+
+  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device3/in_voltage8_raw","r");
+  if (adSysFile!=NULL) {
+    fgets(readBuf,10,adSysFile);
+    fclose(adSysFile);
+  } else {
+    strncpy(readBuf,"readfail\n",9);
+  }
+  logMsgVal.append("sp2-4-v ");
+  lastLen=logMsgVal.length()+1;
+  logMsgVal.append(readBuf);
+  logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
   memset(readBuf, 0, sizeof(readBuf));
 
   // write to log via shakespeare

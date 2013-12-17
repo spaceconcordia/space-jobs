@@ -1,4 +1,3 @@
-//#include <system.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,10 +20,11 @@ int main()
   Priority logPriority = NOTICE;
   string processName,logMsgVal;
   processName = "telemetryPwrIna219";
-  //logMsgVal = "Test log payload string";
 
   // *** note: for now we assume the ina2xx driver has already been instantiated 
   // *** ina219 is hardwired to: 
+  //  bus: i2c-1
+  //  address: 0x40
   // The data values can be read from the dev system if the existing module is loaded
   // and instantiated
   // DEV_FILES:

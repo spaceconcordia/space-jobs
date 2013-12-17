@@ -23,14 +23,19 @@ int main()
 
   // *** note, for now we assume that the GPIO has been pre-configured
   //   direction set to 'out'
-  //   active_low set to ???
+  //   active_low set to 1
+  //   pin values:
+  //     1 = disabled
+  //     0 = enabled
   // write to GPIO pin
-  // this is an active lo switch, write 0 to enable?
+  // this is an active lo switch, write 0 to enable
+
+  char pinValue='0';
 
   FILE* gpioSysFile;
-  gpioSysFile=fopen("/sys/...","w");
+  gpioSysFile=fopen("/dev/gpios/consat/GPIO_./value","w");
   if (gpioSysFile!=NULL) {
-    fputc('0',gpioSysFile);
+    fputc(pinValue,gpioSysFile);
     fclose(gpioSysFile);
     logMsgVal = "enabled AHRM";
   } else {

@@ -21,12 +21,16 @@ int main()
   string processName,logMsgVal;
   processName = "mechAHRM";
 
+  // *** note, for now we assume that the GPIO has been pre-configured
+  //   direction set to 'out'
+  //   active_low set to ???
   // write to GPIO pin
+  // this is an active lo switch, write 0 to enable?
 
   FILE* gpioSysFile;
   gpioSysFile=fopen("/sys/...","w");
   if (gpioSysFile!=NULL) {
-    // fgets(readBuf,10,gpioSysFile);
+    fputc('0',gpioSysFile);
     fclose(gpioSysFile);
     logMsgVal = "enabled AHRM";
   } else {
@@ -34,7 +38,7 @@ int main()
   }
 
   // write to log via shakespeare
-  tgtLog=fopen("/var/log/","a");
+  tgtLog=fopen("/var/log/mechJobLog","a");
   Log(tgtLog,logPriority,processName,logMsgVal);
 
   // close and exit

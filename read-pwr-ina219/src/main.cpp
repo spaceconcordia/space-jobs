@@ -92,7 +92,7 @@ int main()
   memset(readBuf, 0, sizeof(readBuf));
 
   // write to log via shakespeare
-  tgtLog=fopen("/tmp/telemetryPowerLog","a");
+  tgtLog=fopen("/var/log/telemetryPowerLog","a");
   Log(tgtLog,logPriority,processName,logMsgVal);
 
   // close and exit

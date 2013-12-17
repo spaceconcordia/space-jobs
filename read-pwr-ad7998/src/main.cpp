@@ -29,11 +29,13 @@ int main()
   // The data values can be read from the dev system if the existing module is loaded
   // and instantiated
   // Channels 1,3,5,7 are grounded
+  // in the datasheet, pin channels are labelled 1-8, in the driver sys files, channels are numbered
+  // 0-7, therefore device files 1,3,5,7 correspond to pin channels 2,4,6,8
   // DEV_FILES:
-  //  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage2_raw : channel 2 - battery thermistor1 voltage
-  //  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage4_raw : channel 4 - battery thermistor2 voltage
-  //  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage6_raw : channel 6 - solar panel1_3 voltage divider
-  //  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage8_raw : channel 8 - solar panel2_4 voltage divider
+  //  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage1_raw : channel 2 - battery thermistor1 voltage
+  //  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage3_raw : channel 4 - battery thermistor2 voltage
+  //  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage5_raw : channel 6 - solar panel1_3 voltage divider
+  //  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage7_raw : channel 8 - solar panel2_4 voltage divider
 
   FILE* adSysFile;
   char readBuf[10];
@@ -95,7 +97,7 @@ int main()
   memset(readBuf, 0, sizeof(readBuf));
 
   // write to log via shakespeare
-  tgtLog=fopen("/tmp/telemetryPowerLog","a");
+  tgtLog=fopen("/var/log/telemetryPowerLog","a");
   Log(tgtLog,logPriority,processName,logMsgVal);
 
   // close and exit

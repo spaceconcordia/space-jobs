@@ -41,7 +41,7 @@ int main()
   char readBuf[10];
   size_t lastLen=0;
 
-  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device3/in_voltage2_raw","r");
+  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device3/in_voltage1_raw","r");
   if (adSysFile!=NULL) {
     fgets(readBuf,10,adSysFile);
     fclose(adSysFile);
@@ -55,7 +55,7 @@ int main()
   logMsgVal.append(" :: ");
   memset(readBuf, 0, sizeof(readBuf));
 
-  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device3/in_voltage4_raw","r");
+  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device3/in_voltage3_raw","r");
   if (adSysFile!=NULL) {
     fgets(readBuf,10,adSysFile);
     fclose(adSysFile);
@@ -69,7 +69,7 @@ int main()
   logMsgVal.append(" :: ");
   memset(readBuf, 0, sizeof(readBuf));
 
-  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device3/in_voltage6_raw","r");
+  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device3/in_voltage5_raw","r");
   if (adSysFile!=NULL) {
     fgets(readBuf,10,adSysFile);
     fclose(adSysFile);
@@ -83,7 +83,7 @@ int main()
   logMsgVal.append(" :: ");
   memset(readBuf, 0, sizeof(readBuf));
 
-  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device3/in_voltage8_raw","r");
+  adSysFile=fopen("/sys/bus/i2c/devices/1-0023/iio:device3/in_voltage7_raw","r");
   if (adSysFile!=NULL) {
     fgets(readBuf,10,adSysFile);
     fclose(adSysFile);

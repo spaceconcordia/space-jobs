@@ -1,5 +1,7 @@
-*.swp
+a.out
 bin/*
-lib/*
-*.o
+*.swp
+*.swo
+*.log
 *.a
+*.o

@@ -17,7 +17,7 @@ int main()
 
   // variables needed to call shakespeare log function
   FILE* tgtLog;
-  Priority logPriority = NOTICE;
+  //  Priority logPriority = NOTICE;
   string processName,logMsgVal;
   processName = "telemetryPwrAd7998";
   //logMsgVal = "Test log payload string";
@@ -97,8 +97,8 @@ int main()
   memset(readBuf, 0, sizeof(readBuf));
 
   // write to log via shakespeare
-  tgtLog=fopen("/var/log/telemetryPowerLog","a");
-  Log(tgtLog,logPriority,processName,logMsgVal);
+  tgtLog=Shakespeare::open_log("/var/log/telemetryPowerLog",processName);
+  Shakespeare::log(tgtLog,Shakespeare::NOTICE,processName,logMsgVal);
 
   // close and exit
   fclose(tgtLog);

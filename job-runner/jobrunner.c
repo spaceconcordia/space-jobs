@@ -48,16 +48,16 @@ void fork_and_manage_child(const char * path, char ** args, long duration){
 
          if(val == -1){
             fprintf(stderr, "Error while waitpid'ing: %s.\n", strerror(errno));
-            // TODO - shakespeare log that shit
+            // TODO - shakespeare log this
          }
          
          if(kill(pid, SIGKILL)){
             fprintf(stderr, "Error while killing: %s.\n", strerror(errno));
-            // TODO - shakespeare log that shit
+            // TODO - shakespeare log this
          }
 
          // TODO - test this.
-         val = wait(pid, &status, WNOHANG); // the point of this is to ensure that we don't create zombies
+         val = waitpid(pid, &status, WNOHANG); // the point of this is to ensure that we don't create zombies
                                             // when killing misbehaving child processes
          if( ! ( val > 0 && (WIFEXITED(status) || WIFSIGNALED(status)) )   ){
             fprintf(stderr, "Child doesn't seem to have been killed... maybe we didn't wait long enough?\n");

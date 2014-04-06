@@ -1,7 +1,5 @@
 CC=g++
-#MICROCC=microblazeel-xilinx-linux-gnu-g++
-MICROCCPATH=/home/ty/XiphosDevEnv/petalinux-v12.12-mbel/bin
-MICROCC=$(MICROCCPATH)/microblazeel-xilinx-linux-gnu-g++
+MICROCC=microblazeel-xilinx-linux-gnu-g++
 CFLAGS=-Wall
 MICROCFLAGS=-mcpu=v8.40.b -mxl-barrel-shift -mxl-multiply-high -mxl-pattern-compare -mno-xl-soft-mul -mno-xl-soft-div -mxl-float-sqrt -mhard-float -mxl-float-convert -mlittle-endian -Wall
 DEBUGFLAGS=-ggdb -g -gdwarf-2 -g3 #gdwarf-2 + g3 provides macro info to gdb
@@ -17,35 +15,3 @@ buildBin:
 
 buildQ6:
 	$(MICROCC) $(MICROCFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -lshakespeare-mbcc -o bin/enable-AHRM
-
-#buildAllTests: buildUnitTests
-#buildUnitTests:
-#        $(CC) $(CFLAGS) $(DEBUGFLAGS) $(INCPATH) $(INCTESTPATH) $(LIBPATH) src/*.cpp tests/unit/*.cpp -o bin/AllUnitTests $(LIBS)
-
-
-#%.o: %.cpp
-#        $(CC) $(CFLAGS) $(INCPATH) $(LIBPATH) -DPC -c $^ -o $@
-
-#%.a: %.o
-#        ar -cvq $@ $^
-
-#staticlibs.tar: src/NamedPipe.a src/Net2Com.a
-#        mv $^ ./
-#        tar -cf $@ include/NamedPipe.h include/Net2Com.h NamedPipe.a Net2Com.a
-#        rm *.a
-
-#src/NamedPipeQ6.o: src/NamedPipe.cpp
-#        $(MICROCC) $(MICROCFLAGS) $(INCPATH) -c $^ -o $@
-
-#src/Net2ComQ6.o : src/Net2Com.cpp
-#        $(MICROCC) $(MICROCFLAGS) $(INCPATH) -c $^ -o $@
-
-#src/NamedPipe-mbcc.a: src/NamedPipeQ6.o
-#        ar -cvq $@ $^
-
-#src/Net2Com-mbcc.a: src/Net2ComQ6.o
-#        ar -cvq $@ $^
-
-#staticlibsQ6.tar: src/NamedPipe-mbcc.a src/Net2Com-mbcc.a
-#        mv $^ ./
-#        tar -cf $@ include/NamedPipe.h include/Net2Com.h NamedPipe-mbcc.a Net2Com-mbcc.a

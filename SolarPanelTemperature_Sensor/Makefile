@@ -1,11 +1,10 @@
 CC=g++
 MICROCC=microblazeel-xilinx-linux-gnu-g++
-MICROCCPATH=/home/ty/XiphosDevEnv/petalinux-v12.12-mbel/bin
-#MICROCC=$(MICROCCPATH)/microblazeel-xilinx-linux-gnu-g++
 CFLAGS=-Wall
 MICROCFLAGS=-mcpu=v8.40.b -mxl-barrel-shift -mxl-multiply-high -mxl-pattern-compare -mno-xl-soft-mul -mno-xl-soft-div -mxl-float-sqrt -mhard-float -mxl-float-convert -mlittle-endian -Wall
 DEBUGFLAGS=-ggdb -g -gdwarf-2 -g3 #gdwarf-2 + g3 provides macro info to gdb
-INCPATH=-I./include/ -I/home/ty/XiphosDevEnv/petalinux-v12.12-mbel/microblazeel-xilinx-linux-gnu/sys-root/usr/include/
+INCPATH=-I./include/ #-I/home/ty/XiphosDevEnv/petalinux-v12.12-mbel/microblazeel-xilinx-linux-gnu/sys-root/usr/include/
+INCPATH=-I./include/ 
 INCTESTPATH=-I./tests/unit/stubs/ -I./tests/helpers/include/
 LIBPATH=-L./lib/
 #LIBS=-lCppUTest -lCppUTestExt
@@ -13,10 +12,10 @@ LIBPATH=-L./lib/
 #DEBUG_SRC_FILES =`find src/ ! -name 'main.cpp' -name '*.cpp'`
 
 buildBin:
-	$(CC) $(CFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -lshakespeare -o bin/read-pwr-ina219-x86
+	$(CC) $(CFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -lshakespeare -o bin/read-solar-temp-x86
 
 buildQ6:
-	$(MICROCC) $(MICROCFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -lshakespeare-mbcc -o bin/read-pwr-ina219 
+	$(MICROCC) $(MICROCFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -lshakespeare-mbcc -o bin/read-solar-temp-x86
 
 #buildAllTests: buildUnitTests
 #buildUnitTests:

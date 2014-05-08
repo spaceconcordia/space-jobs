@@ -1,8 +1,7 @@
 a.out
-bin/*
+*bin/*
 *.swp
 *.swo
 *.log
 *.a
 *.o
-bin/*

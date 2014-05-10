@@ -1,7 +1,9 @@
 a.out
-*bin/*
+*/bin/*
 *.swp
 *.swo
 *.log
 *.a
 *.o
+read-pwr-ad7998-x86
+

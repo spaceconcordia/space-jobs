@@ -12,10 +12,10 @@ BBINCPATH=-I./inc/BB/
 LIBPATH=-L./lib
 
 buildBin:
-	$(CXX) $(CXX_FLAGS) $(INCPATH) $(PCINCPATH) $(LIBPATH) $(DEBUGFLAGS) jobrunner.c -ltimer -lrt -o bin/job-runner
+	$(CXX) $(CXX_FLAGS) $(INCPATH) $(PCINCPATH) $(LIBPATH) $(DEBUGFLAGS) jobrunner.c -ltimer -lshakespeare -lrt -o bin/job-runner
 
 buildQ6:
-	$(MICROPP) $(CXX_FLAGS) $(MICROCFLAGS) $(INCPATH) $(MICROINCPATH) $(LIBPATH) $(DEBUGFLAGS) jobrunner.c -ltimer-mbcc -lrt -o bin/job-runner-mbcc
+	$(MICROPP) $(CXX_FLAGS) $(MICROCFLAGS) $(INCPATH) $(MICROINCPATH) $(LIBPATH) $(DEBUGFLAGS) jobrunner.c -ltimer-mbcc -lshakespeare-mbcc -lrt -o bin/job-runner-mbcc
 
 buildBB:
-	$(BEAGLECC) $(CXX_FLAGS) $(INCPATH) $(BBINCPATH) $(LIBPATH) $(DEBUGFLAGS) -static -c src/SC_he100.c -o lib/he100-BB.o -ltimer-BB -lshakespeare-BB
+	$(BEAGLECC) $(CXX_FLAGS) $(INCPATH) $(BBINCPATH) $(LIBPATH) $(DEBUGFLAGS) -static -c src/jobrunner.c -ltimer-BB -lshakespeare-BB

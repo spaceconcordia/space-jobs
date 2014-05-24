@@ -7,9 +7,15 @@
 #include <stdio.h>
 #include <signal.h>
 
+#include "shakespeare.h"
+
 // spaceconcordia
 #include <timer.h>
 
+#define processName "Job-Runner"
+#define ERRORBUFFERSIZE 35
+#define LOGPATH "/tmp/job-runner"
+FILE* jrlog;
 
 // This function forks a new subprocess, in which it runs the program `path`
 // with arguments `args` (both according to the format expected by `execvp`.
@@ -20,14 +26,16 @@
 // If it has not exited or been killed, this function kills it.
 //
 // The function then returns.
-void fork_and_manage_child(const char * path, char ** args, long duration){
-
+void fork_and_manage_child (const char * path, char ** args, long duration)
+{
    pid_t pid;
 
-   if(! (pid = fork())){
+   if (! (pid = fork())) 
+   {
       execvp(path, args);
-   }else{
-
+   } 
+   else 
+   {
       struct timespec requested;
       struct timespec remainder;
 
@@ -44,23 +52,34 @@ void fork_and_manage_child(const char * path, char ** args, long duration){
 
       val = waitpid(pid, &status, WNOHANG);
          
-      if( ! ( val > 0 && (WIFEXITED(status) || WIFSIGNALED(status)) )   ){
+      if( !( val > 0 && (WIFEXITED(status) || WIFSIGNALED(status)) ) ){
 
-         if(val == -1){
-            fprintf(stderr, "Error while waitpid'ing: %s.\n", strerror(errno));
-            // TODO - shakespeare log this
+         if (val == -1) {
+            char errormsg[ERRORBUFFERSIZE] = {0}; // TODO test bounds
+            sprintf(errormsg, "Error while waitpid'ing: %s.", strerror(errno));
+            jrlog=Shakespeare::open_log(LOGPATH,processName);
+            Shakespeare::log(jrlog,Shakespeare::ERROR,path,errormsg);
+            fclose(jrlog);
          }
          
-         if(kill(pid, SIGKILL)){
-            fprintf(stderr, "Error while killing: %s.\n", strerror(errno));
-            // TODO - shakespeare log this
+         if ( kill(pid, SIGKILL) ) {
+            char killerrormsg[ERRORBUFFERSIZE] = {0};
+            sprintf(killerrormsg, "Error while killing: %s.", strerror(errno));
+            jrlog=Shakespeare::open_log(LOGPATH,processName);
+            Shakespeare::log(jrlog,Shakespeare::ERROR,path,killerrormsg);
          }
 
          // TODO - test this.
-         val = waitpid(pid, &status, WNOHANG); // the point of this is to ensure that we don't create zombies
-                                            // when killing misbehaving child processes
-         if( ! ( val > 0 && (WIFEXITED(status) || WIFSIGNALED(status)) )   ){
-            fprintf(stderr, "Child doesn't seem to have been killed... maybe we didn't wait long enough?\n");
+         // the point of this is to ensure that we don't create zombie
+         // when killing misbehaving child processess
+         val = waitpid(pid, &status, WNOHANG); 
+
+         if ( !( val > 0 && (WIFEXITED(status) || WIFSIGNALED(status)) ) ) {
+            char childstatuserr[ERRORBUFFERSIZE] = {0};
+            sprintf(childstatuserr, "Child still alive...wait longer?");
+            jrlog=Shakespeare::open_log(LOGPATH,processName);
+            Shakespeare::log(jrlog,Shakespeare::ERROR,path,childstatuserr);
+            fclose(jrlog);
          }
       }
    }
@@ -68,22 +87,18 @@ void fork_and_manage_child(const char * path, char ** args, long duration){
 
 int main(int argc, const char *argv[])
 {
-   
    if(argc < 4){
-      fprintf(stderr, "Usage: %s <period (ns)> <duration (ms)> <script> [<args>...]\n", argv[0]);
+      fprintf(stderr, "Usage: %s <frequency (ns)> <duration (ms)> <script> [<args>...]\n", argv[0]);
       return -1;
    }
 
-   long period         = atol(argv[1]);
+   long frequency         = atol(argv[1]);
    // TODO - validate ??
    
    long duration       = atol(argv[2]);
    // TODO - validate ??
 
-   // ////////////////////////////////////////////////////////////////////////
-   // Set up arguments for exec:
-   //
-   // The path is always the 3th argument
+   // Set up arguments for exec: the path is always the 3th argument
    const char * path = argv[3];
    // All of the rest of the arguments are arguments for the job. The path of
    // the job should also be passed to the job as argument zero.
@@ -96,12 +111,9 @@ int main(int argc, const char *argv[])
          (char*)malloc(sizeof(char) * (strlen(argv[i + 3]) + 1)),
          argv[i + 3]);
    }
+
    // arg list must be null-terminated for execvp
    args[argc-3] = NULL;
-
-   //
-   // ////////////////////////////////////////////////////////////////////////
-
 
    // Start a timer to track the total duration, as it's the most accurate way to do so I think
    timer_t timer = timer_get();
@@ -109,9 +121,8 @@ int main(int argc, const char *argv[])
 
    // just keep forkin
    while(!timer_complete(&timer)){
-      fork_and_manage_child(path, args, period);
+      fork_and_manage_child(path, args, frequency);
    }
-   
    
    return 0;
 }

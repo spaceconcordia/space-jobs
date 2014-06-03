@@ -16,7 +16,7 @@ namespace Shakespeare
 
     char *get_custom_time(string format);
 
-    void log(FILE* lf, Priority ePriority, string process, string msg);
+    int log(FILE* lf, Priority ePriority, string process, string msg);
 
     int file_size_limit_reached(char *filepath, size_t write_size);
 

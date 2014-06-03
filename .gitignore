@@ -5,5 +5,4 @@ a.out
 *.log
 *.a
 *.o
-read-pwr-ad7998-x86
-
+bin/read-*

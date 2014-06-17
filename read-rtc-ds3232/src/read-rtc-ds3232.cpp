@@ -9,7 +9,7 @@
 #include "shakespeare.h"
 
 #define LOG_DIR "/home/logs/"
-#define PROCESS "job_template"
+#define PROCESS "read-rtc-ds3232"
 
 using namespace std;
 
@@ -20,7 +20,7 @@ int main()
 
   // variables needed to call shakespeare log function
   FILE* logfile;
-  logfile=Shakespeare::open_log(LOG_DIR,PROCESS);
+  logfile=Shakespeare::open_log("/var/log/read-rtc-ds3232",PROCESS);
   // write to log via shakespeare
   if(logfile!=NULL) {
     Shakespeare::log(logfile, Shakespeare::WARNING, PROCESS, "This is a warning message");

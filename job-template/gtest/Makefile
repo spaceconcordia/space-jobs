@@ -32,7 +32,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = job_template_test
+TESTS = job-template_test
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -72,14 +72,14 @@ gtest_main.a : gtest-all.o gtest_main.o
 
 ###########################
 
-job_template.o : $(USER_DIR)/src/job_template.cpp $(SHAKES_DIR)/inc/shakespeare.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(USER_DIR)/src/job_template.cpp
+job-template.o : $(USER_DIR)/src/job-template.cpp $(SHAKES_DIR)/inc/shakespeare.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(USER_DIR)/src/job-template.cpp
 
 shakespeare.o : $(SHAKES_DIR)/src/shakespeare.cpp $(SHAKES_DIR)/inc/shakespeare.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(SHAKES_DIR)/src/shakespeare.cpp 
 
-job_template_test : job_template.o shakespeare.o gtest_main.a
+job-template_test : job-template.o shakespeare.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -lrt
 
-job_template_test.o : job_template_test.cpp $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c job_template_test.cpp
+job-template_test.o : job-template_test.cpp $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c job-template_test.cpp

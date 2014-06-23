@@ -1,4 +1,4 @@
-JOBNAME=job_template
+JOBNAME=job-template
 CC=g++
 MICROCC=microblazeel-xilinx-linux-gnu-g++
 MICROCCPATH=/home/ty/XiphosDevEnv/petalinux-v12.12-mbel/bin

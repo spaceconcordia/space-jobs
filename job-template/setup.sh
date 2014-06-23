@@ -38,7 +38,7 @@ quit () {
 usage="${yellow}usage: setup.sh [project_name (optional)]${NC}"
 #if [ $# -eq 0 ]; then echo -e "No arguments supplied... $usage"; fi 
 
-ORIG_TEXT="job_template"
+ORIG_TEXT="job-template"
 CURRENT_DIR=${PWD##*/}
 
 search-and-replace () {

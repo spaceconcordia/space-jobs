@@ -20,7 +20,7 @@ int main()
 
   // variables needed to call shakespeare log function
   FILE* logfile;
-  logfile=Shakespeare::open_log("/var/log/job_template",PROCESS);
+  logfile=Shakespeare::open_log(LOG_DIR,PROCESS);
   // write to log via shakespeare
   if(logfile!=NULL) {
     Shakespeare::log(logfile, Shakespeare::WARNING, PROCESS, "This is a warning message");

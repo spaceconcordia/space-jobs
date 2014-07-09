@@ -1,3 +1,15 @@
+/*
+X - > X axis
+Y - > Y axis
+Z - > Z axis
+r - > range
+s - > scale
+rf - > read failed
+*/
+
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,161 +19,170 @@
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
 #include "shakespeare.h"
+#define LOG_DIR "/home/logs/"
+#define PROCESS "TeleACS"
+
 using namespace std;
 
 
 int main()
 {
 
-	int exitStatus=0;
-	Priority logPriority = NOTICE;
-	FILE* hmcSysFile;
-	FILE* tgtLog;
+int exitStatus=0;
+FILE* hmcSysFile;
+FILE* logfile;
+string DATA = "telemetryACS",logMsgVal;
+char* pPath;
+pPath = getenv("PATH");
+char readBuff[100];
+size_t lastLen=0;
+/************************************************************/
+/*********************HMC5883L X axis Raw********************/
+/************************************************************/
+char result[100]; // array to hold the result.
 
-	string processName = "telemetryACS",logMsgVal;
-	
-
-	char readBuff[100];
-	size_t lastLen=0;
-	/************************************************************/
-	/*********************HMC5883L X axis Raw********************/
-	/************************************************************/
-	hmcSysFile = fopen("/sys/bus/i2c/devices/1-001e/iio:device1/in_magn_x_raw","r");
-	if (hmcSysFile !=NULL)
-	{
-		fgets(readBuff,10,hmcSysFile);
-		fclose(hmcSysFile);
-	}
-	else
-	{
-		strncpy(readBuff,"readfail\n",9);
-	}
-
- 	logMsgVal.append("Magnetometer X : ");
-  	lastLen=logMsgVal.length()+1;
-  	logMsgVal.append(readBuff);
-  	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
-  	logMsgVal.append(" :: ");
-  	memset(readBuff, 0, sizeof(readBuff));
-	/************************************************************/
-	/************************************************************/
-	/************************************************************/
-
-	/************************************************************/
-	/*********************HMC5883L Y axis Raw********************/
-	/************************************************************/
-	hmcSysFile = fopen("/sys/bus/i2c/devices/1-001e/iio:device1/in_magn_y_raw","r");
-	if (hmcSysFile !=NULL)
-	{
-		fgets(readBuff,10,hmcSysFile);
-		fclose(hmcSysFile);
-	}
-	else
-	{
-		strncpy(readBuff,"readfail\n",9);
-	}
-
- 	logMsgVal.append("Magnetometer Y : ");
-  	lastLen=logMsgVal.length()+1;
-  	logMsgVal.append(readBuff);
-  	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
-  	logMsgVal.append(" :: ");
-  	memset(readBuff, 0, sizeof(readBuff));
-	/************************************************************/
-	/************************************************************/
-	/************************************************************/
-
-
-
-	/************************************************************/
-	/*********************HMC5883L Z axis Raw********************/
-	/************************************************************/
-	hmcSysFile = fopen("/sys/bus/i2c/devices/1-001e/iio:device1/in_magn_z_raw","r");
-	if (hmcSysFile !=NULL)
-	{
-		fgets(readBuff,10,hmcSysFile);
-		fclose(hmcSysFile);
-	}
-	else
-	{
-		strncpy(readBuff,"readfail\n",9);
-	}
-
- 	logMsgVal.append("Magnetometer Z : ");
-  	lastLen=logMsgVal.length()+1;
-  	logMsgVal.append(readBuff);
-  	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
-  	logMsgVal.append(" :: ");
-  	memset(readBuff, 0, sizeof(readBuff));
-	/************************************************************/
-	/************************************************************/
-	/************************************************************/
-
-
-
-
-
-	
-	/************************************************************/
-	/***********************HMC5883L Range***********************/
-	/************************************************************/
-	
-	hmcSysFile = fopen("/sys/bus/i2c/devices/1-001e/iio:device1/in_magn_range","r");
-	if (hmcSysFile !=NULL)
-	{
-		fgets(readBuff,100,hmcSysFile);
-		fclose(hmcSysFile);
-	}
-	else
-	{
-		strncpy(readBuff,"readfail\n",9);
-	}
-
- 	logMsgVal.append("Magnetometer Range : ");
-  	lastLen=logMsgVal.length()+1;
-  	logMsgVal.append(readBuff);
-  	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
-  	logMsgVal.append(" :: ");
-  	memset(readBuff, 0, sizeof(readBuff));
-	/************************************************************/
-	/************************************************************/
-	/************************************************************/
-
-
-
-
-
-	/************************************************************/
-	/***********************HMC5883L Scale***********************/
-	/************************************************************/
-	
-	hmcSysFile = fopen("/sys/bus/i2c/devices/1-001e/iio:device1/in_magn_scale","r");
-	if (hmcSysFile !=NULL)
-	{
-		fgets(readBuff,100,hmcSysFile);
-		fclose(hmcSysFile);
-	}
-	else
-	{
-		strncpy(readBuff,"readfail\n",9);
-	}
- 	logMsgVal.append("Magnetometer Scale : ");
-  	logMsgVal.append(readBuff);
-  	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
-  	memset(readBuff, 0, sizeof(readBuff));
-	/************************************************************/
-	/************************************************************/
-	/************************************************************/
-
-	
-
- 	// write to log via shakespeare
-  	tgtLog=fopen("/tmp/telemetryACSlog","a");
-  	Log(tgtLog,logPriority,processName,logMsgVal);
-
-  	// close and exit
- 	fclose(tgtLog);
-  	return exitStatus;
-
-
+strcpy(result,pPath); // copy string one into the result.
+strcat(result,"/in_magn_x_raw/ \n");
+hmcSysFile = fopen(result ,"r");
+if (hmcSysFile !=NULL)
+{
+fgets(readBuff,10,hmcSysFile);
+fclose(hmcSysFile);
 }
+else
+{
+strncpy(readBuff,"rf\n",9);
+}
+
+  logMsgVal.append("X:"); // X AXIS
+   lastLen=logMsgVal.length()+1;
+   logMsgVal.append(readBuff);
+   logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
+   logMsgVal.append(" :: ");
+   memset(readBuff, 0, sizeof(readBuff));
+/************************************************************/
+/************************************************************/
+/************************************************************/
+result[0] = 0;
+/************************************************************/
+/*********************HMC5883L Y axis Raw********************/
+/************************************************************/
+
+strcpy(result,pPath); // copy string one into the result.
+strcat(result,"/in_magn_y_raw/ \n");
+hmcSysFile = fopen(result ,"r");
+//hmcSysFile = fopen(pPath + "/in_magn_y_raw","r"); <-- want to amend the string path to access
+if (hmcSysFile !=NULL)
+{
+fgets(readBuff,10,hmcSysFile);
+fclose(hmcSysFile);
+}
+else
+{
+strncpy(readBuff,"rf\n",9);
+}
+
+  logMsgVal.append("Y : "); // Y AXIS
+   lastLen=logMsgVal.length()+1;
+   logMsgVal.append(readBuff);
+   logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
+   logMsgVal.append(" :: ");
+   memset(readBuff, 0, sizeof(readBuff));
+/************************************************************/
+/************************************************************/
+/************************************************************/
+result[0] = 0;
+/************************************************************/
+/*********************HMC5883L Z axis Raw********************/
+/************************************************************/
+strcpy(result,pPath); // copy string one into the result.
+strcat(result,"/in_magn_z_raw/ \n");
+hmcSysFile = fopen(result ,"r");
+//hmcSysFile = fopen(pPath + "/in_magn_z_raw","r"); <-- want to amend the string path to access
+if (hmcSysFile !=NULL)
+{
+fgets(readBuff,10,hmcSysFile);
+fclose(hmcSysFile);
+}
+else
+{
+strncpy(readBuff,"rf\n",9);
+}
+
+  logMsgVal.append("Z: "); //Z AXIS
+   lastLen=logMsgVal.length()+1;
+   logMsgVal.append(readBuff);
+   logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
+   logMsgVal.append(" :: ");
+   memset(readBuff, 0, sizeof(readBuff));
+/************************************************************/
+/************************************************************/
+/************************************************************/
+result[0] = 0;
+/************************************************************/
+/***********************HMC5883L Range***********************/
+/************************************************************/
+strcpy(result,pPath); // copy string one into the result.
+strcat(result,"/in_magn_range/ \n");
+hmcSysFile = fopen(result ,"r");
+//hmcSysFile = fopen(pPath + "/in_magn_range","r"); <-- want to amend the string path to access
+if (hmcSysFile !=NULL)
+{
+fgets(readBuff,100,hmcSysFile);
+fclose(hmcSysFile);
+}
+else
+{
+strncpy(readBuff,"rf\n",9);
+}
+
+  logMsgVal.append("R:");// RANGE
+   lastLen=logMsgVal.length()+1;
+   logMsgVal.append(readBuff);
+   logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
+   logMsgVal.append(" :: ");
+   memset(readBuff, 0, sizeof(readBuff));
+/************************************************************/
+/************************************************************/
+/************************************************************/
+result[0] = 0;
+/************************************************************/
+/***********************HMC5883L Scale***********************/
+/************************************************************/
+strcpy(result,pPath); // copy string one into the result.
+strcat(result,"/in_magn_scale/ \n");
+hmcSysFile = fopen(result ,"r");
+//hmcSysFile = fopen(pPath + "/in_magn_scale","r"); <-- want to amend the string path to access
+if (hmcSysFile !=NULL)
+{
+fgets(readBuff,100,hmcSysFile);
+fclose(hmcSysFile);
+}
+else
+{
+strncpy(readBuff,"rf\n",9);
+}
+  logMsgVal.append("S:"); // SCALE
+   logMsgVal.append(readBuff);
+   logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
+   memset(readBuff, 0, sizeof(readBuff));
+/************************************************************/
+/************************************************************/
+/************************************************************/
+result[0] = 0;
+  // write to log via shakespeare
+   logfile=Shakespeare::open_log ("/var/log/telemetryACSLog",PROCESS);
+   if(logfile!=NULL)
+{
+    // Shakespeare::log(logfile, Shakespeare::WARNING, PROCESS, "This is a warning message");
+     Shakespeare::log(logfile, Shakespeare::NOTICE, PROCESS,logMsgVal);
+         // Shakespeare::log(logfile, Shakespeare::ERROR, PROCESS, "This is an error message");
+     // Shakespeare::log(logfile, Shakespeare::URGENT, PROCESS, "This is an urgent message");
+    // Shakespeare::log(logfile, Shakespeare::CRITICAL, PROCESS, "This is a critical message");
+   }
+
+   // close and exit
+  fclose(logfile);
+   return exitStatus;
+
+} 

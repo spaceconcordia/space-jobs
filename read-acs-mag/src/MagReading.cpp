@@ -18,7 +18,7 @@ rf - > read failed
 #include <iostream>
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
-#include "shakespeare.h"
+#include "../include/shakespeare.h"
 #define LOG_DIR "/home/logs/"
 #define PROCESS "TeleACS"
 
@@ -71,7 +71,7 @@ int main()
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,"/in_magn_y_raw/ \n");
 	hmcSysFile = fopen(result ,"r");
-	//hmcSysFile = fopen(pPath + "/in_magn_y_raw","r"); <-- want to amend the string path to access 
+
 	if (hmcSysFile !=NULL)
 	{
 		fgets(readBuff,10,hmcSysFile);
@@ -82,7 +82,7 @@ int main()
 		strncpy(readBuff,"rf\n",9);
 	}
 
- 	logMsgVal.append("Y : "); // Y AXIS 
+ 	logMsgVal.append("Y:"); // Y AXIS 
   	lastLen=logMsgVal.length()+1;
   	logMsgVal.append(readBuff);
   	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
@@ -98,7 +98,7 @@ int main()
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,"/in_magn_z_raw/ \n");
 	hmcSysFile = fopen(result ,"r");
-	//hmcSysFile = fopen(pPath + "/in_magn_z_raw","r"); <-- want to amend the string path to access 
+
 	if (hmcSysFile !=NULL)
 	{
 		fgets(readBuff,10,hmcSysFile);
@@ -109,7 +109,7 @@ int main()
 		strncpy(readBuff,"rf\n",9);
 	}
 
- 	logMsgVal.append("Z: "); //Z AXIS 
+ 	logMsgVal.append("Z:"); //Z AXIS 
   	lastLen=logMsgVal.length()+1;
   	logMsgVal.append(readBuff);
   	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
@@ -125,7 +125,7 @@ int main()
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,"/in_magn_range/ \n");
 	hmcSysFile = fopen(result ,"r");
-	//hmcSysFile = fopen(pPath + "/in_magn_range","r"); <-- want to amend the string path to access 
+
 	if (hmcSysFile !=NULL)
 	{
 		fgets(readBuff,100,hmcSysFile);
@@ -152,7 +152,7 @@ int main()
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,"/in_magn_scale/ \n");
 	hmcSysFile = fopen(result ,"r");
-	//hmcSysFile = fopen(pPath + "/in_magn_scale","r"); <-- want to amend the string path to access 
+
 	if (hmcSysFile !=NULL)
 	{
 		fgets(readBuff,100,hmcSysFile);
@@ -171,13 +171,13 @@ int main()
 	/************************************************************/
 	result[0] = 0;
  	// write to log via shakespeare
-  	logfile=Shakespeare::open_log ("/var/log/telemetryACSLog",PROCESS);
+  	logfile=Shakespeare::open_log ("/home/logs/telemetryACSLog",PROCESS);
   	if(logfile!=NULL) 
 	{
    		// Shakespeare::log(logfile, Shakespeare::WARNING, PROCESS, "This is a warning message");
-    		Shakespeare::log(logfile, Shakespeare::NOTICE, PROCESS,logMsgVal);
-        	// Shakespeare::log(logfile, Shakespeare::ERROR, PROCESS, "This is an error message");
-    		// Shakespeare::log(logfile, Shakespeare::URGENT, PROCESS, "This is an urgent message");
+    	Shakespeare::log(logfile, Shakespeare::NOTICE, PROCESS,logMsgVal);
+       	// Shakespeare::log(logfile, Shakespeare::ERROR, PROCESS, "This is an error message");
+    	// Shakespeare::log(logfile, Shakespeare::URGENT, PROCESS, "This is an urgent message");
    		// Shakespeare::log(logfile, Shakespeare::CRITICAL, PROCESS, "This is a critical message");
   	}
 

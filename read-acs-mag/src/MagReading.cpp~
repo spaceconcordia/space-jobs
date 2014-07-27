@@ -54,7 +54,7 @@ int main()
 		strncpy(readBuff,"rf\n",9);
 	}
 
- 	logMsgVal.append("X:"); // X AXIS < to decrease the size of the file, since we know what the device is, just need simple header
+ 	logMsgVal.append("X:"); // X AXIS 
   	lastLen=logMsgVal.length()+1;
   	logMsgVal.append(readBuff);
   	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
@@ -82,7 +82,7 @@ int main()
 		strncpy(readBuff,"rf\n",9);
 	}
 
- 	logMsgVal.append("Y : "); // Y AXIS < to decrease the size of the file, since we know what the device is, just need simple header
+ 	logMsgVal.append("Y : "); // Y AXIS 
   	lastLen=logMsgVal.length()+1;
   	logMsgVal.append(readBuff);
   	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
@@ -109,7 +109,7 @@ int main()
 		strncpy(readBuff,"rf\n",9);
 	}
 
- 	logMsgVal.append("Z: "); //Z AXIS < to decrease the size of the file, since we know what the device is, just need simple header
+ 	logMsgVal.append("Z: "); //Z AXIS 
   	lastLen=logMsgVal.length()+1;
   	logMsgVal.append(readBuff);
   	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
@@ -136,7 +136,7 @@ int main()
 		strncpy(readBuff,"rf\n",9);
 	}
 
- 	logMsgVal.append("R:");// RANGE < to decrease the size of the file, since we know what the device is, just need simple header
+ 	logMsgVal.append("R:");// RANGE
   	lastLen=logMsgVal.length()+1;
   	logMsgVal.append(readBuff);
   	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
@@ -162,7 +162,7 @@ int main()
 	{
 		strncpy(readBuff,"rf\n",9);
 	}
- 	logMsgVal.append("S:"); // SCALE < to decrease the size of the file, since we know what the device is, just need simple header
+ 	logMsgVal.append("S:"); // SCALE
   	logMsgVal.append(readBuff);
   	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
   	memset(readBuff, 0, sizeof(readBuff));

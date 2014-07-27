@@ -12,13 +12,10 @@ LIBPATH=-L./lib/ -L../../space-lib/shakespeare/lib/
 #DEBUG_SRC_FILES =`find src/ ! -name 'main.cpp' -name '*.cpp'`
 
 buildBin:
-	$(CC) $(CFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -lshakespeare -o bin/read-acs-mag-x86
+	$(CC) $(CFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -lshakespeare -o bin/read-solar-temp-x86
 
 buildQ6:
-	$(MICROPP) $(MICROCFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -lshakespeare-mbcc -o bin/read-acs-mag
-
-clean:
-	rm -f bin/* lib/* 
+	$(MICROPP) $(MICROCFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -lshakespeare-mbcc -o bin/read-solar-tem
 
 #buildAllTests: buildUnitTests
 #buildUnitTests:

@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "../inc/timer.h"
+#include <timer.h>
 
 class Job_Runner_Test : public ::testing::Test
 {

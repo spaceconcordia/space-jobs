@@ -12,15 +12,17 @@
 # project, except GTEST_HEADERS, which you can use in your own targets
 # but shouldn't modify.
 
+# Where to find user code
+PROJECT_DIR = ../../../..
+USER_DIR = ../..
+SPACELIB_DIR = $(PROJECT_DIR)/space-lib/
+TIMER_DIR = $(PROJECT_DIR)/space-timer-lib
+SHAKES_DIR = $(PROJECT_DIR)/space-lib/shakespeare
+INCPATH=-I$(USER_DIR)/inc/ -I$(TIMER_DIR)/inc -I$(SHAKES_DIR)/inc -I$(SPACELIB_DIR)/include
+
 # Points to the root of Google Test, relative to where this file is.
 # Remember to tweak this if you move this file.
-GTEST_DIR = ../../../gtest-1.7.0
-
-# Where to find user code.
-USER_DIR = ../
-TIMER_DIR = ../../../space-timer-lib
-SHAKES_DIR = ../../space-lib/shakespeare
-INCPATH=-I../inc/
+GTEST_DIR = $(PROJECT_DIR)/gtest-1.7.0
 
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
@@ -85,4 +87,4 @@ job_runner_test : job_runner_test.o timer.o shakespeare.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -lrt
 
 job_runner_test.o : job_runner_test.cpp $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c job_runner_test.cpp
+	$(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c job_runner_test.cpp

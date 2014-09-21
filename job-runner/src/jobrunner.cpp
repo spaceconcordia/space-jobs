@@ -8,6 +8,7 @@
 #include <signal.h>
 
 #include "shakespeare.h"
+#include <SpaceDecl.h>
 
 // spaceconcordia
 #include <timer.h>
@@ -15,7 +16,6 @@
 #define processName "Job-Runner"
 #define ERRORBUFFERSIZE 35
 #define LOGPATH "/tmp/job-runner"
-FILE* jrlog;
 
 // This function forks a new subprocess, in which it runs the program `path`
 // with arguments `args` (both according to the format expected by `execvp`.
@@ -57,16 +57,13 @@ void fork_and_manage_child (const char * path, char ** args, long duration)
          if (val == -1) {
             char errormsg[ERRORBUFFERSIZE] = {0}; // TODO test bounds
             sprintf(errormsg, "Error while waitpid'ing: %s.", strerror(errno));
-            jrlog=Shakespeare::open_log(LOGPATH,processName);
-            Shakespeare::log(jrlog,Shakespeare::ERROR,path,errormsg);
-            fclose(jrlog);
+            Shakespeare::log(Shakespeare::ERROR,path,errormsg);
          }
          
          if ( kill(pid, SIGKILL) ) {
             char killerrormsg[ERRORBUFFERSIZE] = {0};
             sprintf(killerrormsg, "Error while killing: %s.", strerror(errno));
-            jrlog=Shakespeare::open_log(LOGPATH,processName);
-            Shakespeare::log(jrlog,Shakespeare::ERROR,path,killerrormsg);
+            Shakespeare::log(Shakespeare::ERROR,path,killerrormsg);
          }
 
          // TODO - test this.
@@ -77,9 +74,7 @@ void fork_and_manage_child (const char * path, char ** args, long duration)
          if ( !( val > 0 && (WIFEXITED(status) || WIFSIGNALED(status)) ) ) {
             char childstatuserr[ERRORBUFFERSIZE] = {0};
             sprintf(childstatuserr, "Child still alive...wait longer?");
-            jrlog=Shakespeare::open_log(LOGPATH,processName);
-            Shakespeare::log(jrlog,Shakespeare::ERROR,path,childstatuserr);
-            fclose(jrlog);
+            Shakespeare::log(Shakespeare::ERROR,path,childstatuserr);
          }
       }
    }
@@ -92,14 +87,15 @@ int main(int argc, const char *argv[])
       return -1;
    }
 
-   long frequency         = atol(argv[1]);
+   long frequency = atol(argv[1]);
    // TODO - validate ??
    
-   long duration       = atol(argv[2]);
+   long duration  = atol(argv[2]);
    // TODO - validate ??
 
    // Set up arguments for exec: the path is always the 3th argument
    const char * path = argv[3];
+
    // All of the rest of the arguments are arguments for the job. The path of
    // the job should also be passed to the job as argument zero.
    char ** args = (char **) malloc(sizeof(char*) * (argc-2));
@@ -124,5 +120,7 @@ int main(int argc, const char *argv[])
       fork_and_manage_child(path, args, frequency);
    }
    
-   return 0;
+   free (args);
+
+   return CS1_SUCCESS;
 }

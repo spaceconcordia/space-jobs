@@ -1,21 +1,27 @@
 CC=g++
-MICROCC=/usr/local/lib/mbgcc/bin/microblazeel-xilinx-linux-gnu-gcc
-MICROPP=/usr/local/lib/mbgcc/bin/microblazeel-xilinx-linux-gnu-g++
+MICROCC=microblazeel-xilinx-linux-gnu-g++
 CFLAGS=-Wall
 MICROCFLAGS=-mcpu=v8.40.b -mxl-barrel-shift -mxl-multiply-high -mxl-pattern-compare -mno-xl-soft-mul -mno-xl-soft-div -mxl-float-sqrt -mhard-float -mxl-float-convert -mlittle-endian -Wall
 DEBUGFLAGS=-ggdb -g -gdwarf-2 -g3 #gdwarf-2 + g3 provides macro info to gdb
-INCPATH=-I./include/ -I../../space-lib/shakespeare/inc/
+
+PROJECT_DIR=../../
+SHAKESPEARE_PATH=$(PROJECT_DIR)/space-lib/shakespeare
+UTLS_PATH=$(PROJECT_DIR)/space-lib/utls
+
+INCPATH=-I./include/ -I$(SHAKESPEARE_PATH)/inc
 INCTESTPATH=-I./tests/unit/stubs/ -I./tests/helpers/include/
-LIBPATH=-L./lib/ -L../../space-lib/shakespeare/lib/
+LIBPATH=-L./lib/ -L$(SHAKESPEARE_PATH)/lib -L$(UTLS_PATH)/lib
+PC_LIBS=-lshakespeare -lcs1_utls
+Q6_LIBS=-lshakespeare-mbcc -lcs1_utlsQ6
 #LIBS=-lCppUTest -lCppUTestExt
 #The test builds have their own main provided by CppUTest so we need to exclude commander.cpp
 #DEBUG_SRC_FILES =`find src/ ! -name 'main.cpp' -name '*.cpp'`
 
 buildBin:
-	$(CC) $(CFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -lshakespeare -o bin/read-acs-mag-x86
+	$(CC) $(CFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -o bin/read-acs-mag-x86 $(PC_LIBS)
 
 buildQ6:
-	$(MICROPP) $(MICROCFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -lshakespeare-mbcc -o bin/read-acs-mag
+	$(MICROPP) $(MICROCFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp o bin/read-acs-mag $(Q6_LIBS)
 
 clean:
 	rm -f bin/* lib/* 

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
-#include "shakespeare.h"
+#include <shakespeare.h>
 
 using namespace std;
 

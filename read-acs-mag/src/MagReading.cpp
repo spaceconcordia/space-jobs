@@ -18,7 +18,7 @@ rf - > read failed
 #include <iostream>
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
-#include "../include/shakespeare.h"
+#include <shakespeare.h>
 #define LOG_DIR "/home/logs/"
 #define PROCESS "TeleACS"
 

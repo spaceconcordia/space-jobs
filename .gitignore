@@ -1,5 +1,5 @@
 a.out
-*/bin/*
+**/bin/*
 *.swp
 *.swo
 *.log

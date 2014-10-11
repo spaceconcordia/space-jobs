@@ -6,29 +6,25 @@
 #include <iostream>
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
-#include "shakespeare.h"
+#include <SpaceDecl.h>
+#include <shakespeare.h>
 
-#define LOG_DIR "/home/logs/"
 #define PROCESS "job-template"
 
 using namespace std;
 
 int main()
 {
-  // main function variables 
-  int exitStatus=0;
+  // see space-lib/include/SpaceDecl.h for global exit statuses, or define your own
+  int exitStatus=CS1_SUCCESS;
 
-  // variables needed to call shakespeare log function
-  FILE* logfile;
-  logfile=Shakespeare::open_log("/var/log/job-template",PROCESS);
-  // write to log via shakespeare
-  if(logfile!=NULL) {
-    Shakespeare::log(logfile, Shakespeare::WARNING, PROCESS, "This is a warning message");
-    Shakespeare::log(logfile, Shakespeare::NOTICE, PROCESS, "This is a notice message");
-    Shakespeare::log(logfile, Shakespeare::ERROR, PROCESS, "This is an error message");
-    Shakespeare::log(logfile, Shakespeare::URGENT, PROCESS, "This is an urgent message");
-    Shakespeare::log(logfile, Shakespeare::CRITICAL, PROCESS, "This is a critical message");
-  }
+  short int dummy_sensor_reading = 42;
+
+  Shakespeare::log(Shakespeare::NOTICE, PROCESS, "This is a notice message");
+  Shakespeare::log(Shakespeare::ERROR, PROCESS, "This is an error message");
+
+  Shakespeare::log_bin(Shakespeare::NOTICE, PROCESS, dummy_sensor_reading); // log sensor readings in binary
+
   // close and exit
   fclose(logfile);
   return exitStatus;

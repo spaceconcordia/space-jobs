@@ -17,29 +17,13 @@ Q6_LIBS=-lshakespeare-mbcc -lcs1_utlsQ6
 #The test builds have their own main provided by CppUTest so we need to exclude commander.cpp
 #DEBUG_SRC_FILES =`find src/ ! -name 'main.cpp' -name '*.cpp'`
 
+SUBDIRS=disable-AHRM enable-AHRM read-pwr-ad7998 read-temp-EBPL disable-AHRM read-acs-mag read-pwr-ina219 read-temp-spts
+
 make-directories:
 	mkdir -p bin
 
-% %/src/%.cpp:
-	$(CC) $(CFLAGS) $(INCPATH) $(LIBPATH) $< -o $@ $(PC_LIBS
+buildBin: make-directories
+	set -e; for dir in ${SUBDIRS} ; do cd $$dir; make buildBin; cp bin/* ../bin/ ; cd ..; done
 
-buildBin:
-	$(CC) $(CFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -o bin/read-pwr-ad7998-x86 $(PC_LIBS)
-
-buildQ6:
-	$(MICROCC) $(MICROCFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -o bin/read-pwr-ad7998 $(Q6_LIBS)
-
-bin/read-pwr-ad7998:
-	$(CC) $(CFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -o $^ $(PC_LIBS)
-
-read-pwr-ina219:
-
-read-temp-EBPL:
-
-read-temp-spts:
-
-disable-AHRM: 
-
-enable-AHRM:
-
-
+buildQ6: make-directories
+	set -e; for dir in ${SUBDIRS} ; do cd $$dir; make buildQ6; cp bin/* ../bin/ ; cd ..; done

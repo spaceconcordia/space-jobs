@@ -6,7 +6,8 @@
 #include <iostream>
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
-#include "shakespeare.h"
+#include <shakespeare.h>
+#include <SpaceDecl.h>
 
 using namespace std;
 
@@ -17,7 +18,7 @@ int main()
 
   // variables needed to call shakespeare log function
   string processName,logMsgVal;
-  processName = "mechAHRM";
+  processName = CS1_MECH-AHRM;
 
   // write to GPIO pin
 

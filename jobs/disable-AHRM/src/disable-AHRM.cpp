@@ -18,7 +18,7 @@ int main()
 
   // variables needed to call shakespeare log function
   string processName,logMsgVal;
-  processName = CS1_MECH-AHRM;
+  processName = CS1_MECH_AHRM;
 
   // write to GPIO pin
 

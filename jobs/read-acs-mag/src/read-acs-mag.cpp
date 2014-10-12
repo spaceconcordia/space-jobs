@@ -6,10 +6,6 @@ r - > range
 s - > scale
 rf - > read failed
 */
-
-
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,25 +17,22 @@ rf - > read failed
 #include <shakespeare.h>
 #define LOG_DIR "/home/logs/"
 #define PROCESS "TeleACS"
+#define I2C_READ_BUFFER_SIZE 100
 
 using namespace std;
 
+int get_i2c_path(string i2c_device_identifier, char * path) {
+    path = getenv(i2c_device_identifier);
+    if (path != NULL) {
+        return CS1_SUCCESS;
+    }
+    else {
+        return CS1_NULL_POINTER;
+    }
+} 
 
-int main()
-{
-
-	int exitStatus=0;
-	FILE* hmcSysFile;
-	FILE* logfile;
-	string DATA = "telemetryACS",logMsgVal;
-	char* pPath;
-	pPath = getenv("PATH");
-	char readBuff[100];
-	size_t lastLen=0;
-	/************************************************************/
-	/*********************HMC5883L X axis Raw********************/
-	/************************************************************/
-	char result[100];   // array to hold the result.
+int read_mag_i2c_value(string i2c_register) {
+	char result[I2C_READ_BUFFER_SIZE];   // array to hold the result.
 
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,"/in_magn_x_raw/ \n");
@@ -64,6 +57,24 @@ int main()
 	/************************************************************/
 	/************************************************************/
 	result[0] = 0;
+}
+
+int main()
+{
+	/************************************************************/
+	/*********************HMC5883L X axis Raw********************/
+	/************************************************************/
+
+    char * i2c_parent_path = {0};
+    get_i2c_path(PROCESS, i2c_parent_path);
+
+	FILE* hmcSysFile;
+	FILE* logfile;
+	string DATA = "telemetryACS",logMsgVal;
+
+	char readBuff[100];
+	size_t lastLen=0;
+
 	/************************************************************/
 	/*********************HMC5883L Y axis Raw********************/
 	/************************************************************/

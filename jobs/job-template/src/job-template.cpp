@@ -9,23 +9,21 @@
 #include <SpaceDecl.h>
 #include <shakespeare.h>
 
-#define PROCESS "job-template"
+uint8_t process_id = CS1_UNDEF_SUB; // change this once your job is registered in SpaceDecl.h and cs1_systems.cpp
+const string process = cs1_systems[process_id];
 
 using namespace std;
 
 int main()
 {
   // see space-lib/include/SpaceDecl.h for global exit statuses, or define your own
-  int exitStatus=CS1_SUCCESS;
 
   short int dummy_sensor_reading = 42;
 
-  Shakespeare::log(Shakespeare::NOTICE, PROCESS, "This is a notice message");
-  Shakespeare::log(Shakespeare::ERROR, PROCESS, "This is an error message");
+  Shakespeare::log(Shakespeare::NOTICE, process, "This is a notice message");
+  Shakespeare::log(Shakespeare::ERROR, process, "This is an error message");
 
-  Shakespeare::log_bin(Shakespeare::NOTICE, PROCESS, dummy_sensor_reading); // log sensor readings in binary
+  Shakespeare::log_bin(Shakespeare::NOTICE, process_id, dummy_sensor_reading); // log sensor readings in binary
 
-  // close and exit
-  fclose(logfile);
-  return exitStatus;
+  return CS1_SUCCESS;
 }

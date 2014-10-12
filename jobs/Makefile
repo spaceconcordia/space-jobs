@@ -19,11 +19,11 @@ Q6_LIBS=-lshakespeare-mbcc -lcs1_utlsQ6
 
 SUBDIRS=disable-AHRM enable-AHRM read-pwr-ad7998 read-temp-EBPL disable-AHRM read-acs-mag read-pwr-ina219 read-temp-spts
 
-make-directories:
-	mkdir -p bin
-
 buildBin: make-directories
 	set -e; for dir in ${SUBDIRS} ; do cd $$dir; make buildBin; cp bin/* ../bin/ ; cd ..; done
 
 buildQ6: make-directories
 	set -e; for dir in ${SUBDIRS} ; do cd $$dir; make buildQ6; cp bin/* ../bin/ ; cd ..; done
+
+make-directories:
+	mkdir -p bin

@@ -1,3 +1,4 @@
+JOBNAME=read-payload-111011
 CC=g++
 MICROCC=microblazeel-xilinx-linux-gnu-g++
 CFLAGS=-Wall
@@ -14,8 +15,6 @@ INCTESTPATH=-I./tests/unit/stubs/ -I./tests/helpers/include/
 LIBPATH=-L./lib/ -L$(SHAKESPEARE_PATH)/lib -L$(UTLS_PATH)/lib
 PC_LIBS=-lshakespeare -lcs1_utls
 Q6_LIBS=-lshakespeare-mbcc -lcs1_utlsQ6
-
-JOB_NAME=read-acs-mag
 
 buildBin: make-directories
 	$(CC) $(CFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -o bin/$(JOB_NAME)-x86 $(PC_LIBS)

@@ -1,9 +1,5 @@
 job-priority.txt
 
-:Author: spaceconcordia
-:Email: spaceconcordia@mustang
-:Date: 2014-05-25 12:52
-
 Naming Convention
 action-system-hardware_id - e.g. read-pwr-ina219
 
@@ -30,6 +26,3 @@ Priority Two Jobs (upload after launch)
 
 TBD during functional testing
 - Interrupt on line failure
-
-
-.. vim: expandtab filetype=rst shiftwidth=4 tabstop=4

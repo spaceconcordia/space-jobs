@@ -6,13 +6,11 @@
 #include <iostream>
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
-#include <SpaceDecl.h>
 #include <shakespeare.h>
 #include </home/spaceconcordia/CONSAT1/space-lib/utls/include/i2c-device.h>
 #define LOG_DIR "/home/logs/"
 #define PROCESS "TeleSPTS"
-uint8_t process_id = CS1_TEMP_EBPL;
-const string process = cs1_systems[process_id];
+
 
 using namespace std;
 using namespace I2CDevice;
@@ -33,9 +31,8 @@ int main()
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,"/in_voltage0_raw/ \n");
 	I2CRead(result,readBuff);
-	printf("%s\n",readBuff);
-    temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	temp_data = strtol(readBuff,&pEnd,10);
+	Shakespeare::log_bin(Shakespeare::NOTICE,10,temp_data);
 	/*****************************************************************************/
 
 	result[0] = 0;
@@ -43,11 +40,10 @@ int main()
 	/*********************AD7998 Temperature Sensor 1********************/
 
 	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_voltage_raw/ \n");
+	strcat(result,"/in_voltage1_raw/ \n");
 	I2CRead(result,readBuff);
-	printf("%s\n",readBuff);
-    temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	temp_data = strtol(readBuff,&pEnd,10);
+	Shakespeare::log_bin(Shakespeare::NOTICE,10,temp_data);
 	/*****************************************************************************/
 
 	result[0] = 0;
@@ -57,8 +53,8 @@ int main()
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,"/in_voltage2_raw/ \n");
 	I2CRead(result,readBuff);
-	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	temp_data = strtol(readBuff,&pEnd,10);
+	Shakespeare::log_bin(Shakespeare::NOTICE,10,temp_data);
 	/*****************************************************************************/
 
 
@@ -69,8 +65,8 @@ int main()
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,"/in_voltage3_raw/ \n");
 	I2CRead(result,readBuff);
-	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	temp_data = strtol(readBuff,&pEnd,10);
+	Shakespeare::log_bin(Shakespeare::NOTICE,10,temp_data);
 	/*****************************************************************************/
 
 	result[0] = 0;
@@ -80,8 +76,8 @@ int main()
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,"/in_voltage4_raw/ \n");
 	I2CRead(result,readBuff);
-	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	temp_data = strtol(readBuff,&pEnd,10);
+	Shakespeare::log_bin(Shakespeare::NOTICE,10,temp_data);
 	/********************************************************************************/
 
 	result[0] = 0;
@@ -92,8 +88,8 @@ int main()
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,"/in_voltage5_raw/ \n");
 	I2CRead(result,readBuff);
-	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	temp_data = strtol(readBuff,&pEnd,10);
+	Shakespeare::log_bin(Shakespeare::NOTICE,10,temp_data);
 
 	/********************************************************************************/
 
@@ -104,8 +100,8 @@ int main()
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,"/in_voltage6_raw/ \n");
 	I2CRead(result,readBuff);
-	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	temp_data = strtol(readBuff,&pEnd,10);
+	Shakespeare::log_bin(Shakespeare::NOTICE,10,temp_data);
 
 	/********************************************************************************/
 
@@ -117,8 +113,8 @@ int main()
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,"/in_voltage7_raw/ \n");
 	I2CRead(result,readBuff);
-	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	temp_data = strtol(readBuff,&pEnd,10);
+	Shakespeare::log_bin(Shakespeare::NOTICE,10,temp_data);
 
 	/********************************************************************************/
 

@@ -15,90 +15,51 @@ rf - > read failed
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
 #include <shakespeare.h>
+#include </home/spaceconcordia/CONSAT1/space-lib/utls/include/i2c-device.h>
 #define LOG_DIR "/home/logs/"
-#define PROCESS "TeleACS"
-#define I2C_READ_BUFFER_SIZE 100
+uint8_t process_id = CS1_ACS_MAG;
+const string process = cs1_systems[process_id];
+
+
 
 using namespace std;
-
-int get_i2c_path(string i2c_device_identifier, char * path) {
-    path = getenv(i2c_device_identifier);
-    if (path != NULL) {
-        return CS1_SUCCESS;
-    }
-    else {
-        return CS1_NULL_POINTER;
-    }
-} 
-
-int read_mag_i2c_value(string i2c_register) {
-	char result[I2C_READ_BUFFER_SIZE];   // array to hold the result.
-
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_magn_x_raw/ \n");
-	hmcSysFile = fopen(result ,"r");
-	if (hmcSysFile !=NULL)
-	{
-		fgets(readBuff,10,hmcSysFile);
-		fclose(hmcSysFile);
-	}
-	else
-	{
-		strncpy(readBuff,"rf\n",9);
-	}
-
- 	logMsgVal.append("X:"); // X AXIS 
-  	lastLen=logMsgVal.length()+1;
-  	logMsgVal.append(readBuff);
-  	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
-  	logMsgVal.append(" :: ");
-  	memset(readBuff, 0, sizeof(readBuff));
-	/************************************************************/
-	/************************************************************/
-	/************************************************************/
-	result[0] = 0;
-}
+using namespace I2CDevice;
 
 int main()
 {
+
+	int exitStatus=0;
+	string processName = "telemetryMAG",logMsgVal;
+	char* pPath;
+	pPath = getenv("HMC5843PATH");
+	char readBuff[100];
+	char * pEnd;
+	short int temp_data = 0;
+
+
 	/************************************************************/
 	/*********************HMC5883L X axis Raw********************/
 	/************************************************************/
-
-    char * i2c_parent_path = {0};
-    get_i2c_path(PROCESS, i2c_parent_path);
-
-	FILE* hmcSysFile;
-	FILE* logfile;
-	string DATA = "telemetryACS",logMsgVal;
-
-	char readBuff[100];
-	size_t lastLen=0;
+	char result[100];	
+	strcpy(result,pPath); // copy string one into the result.
+	strcat(result,"/in_magn_x_raw");
+    	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
 
 	/************************************************************/
 	/*********************HMC5883L Y axis Raw********************/
 	/************************************************************/
 
+
+	
 	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_magn_y_raw/ \n");
-	hmcSysFile = fopen(result ,"r");
+	strcat(result,"/in_magn_y_raw");
+    	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
 
-	if (hmcSysFile !=NULL)
-	{
-		fgets(readBuff,10,hmcSysFile);
-		fclose(hmcSysFile);
-	}
-	else
-	{
-		strncpy(readBuff,"rf\n",9);
-	}
 
- 	logMsgVal.append("Y:"); // Y AXIS 
-  	lastLen=logMsgVal.length()+1;
-  	logMsgVal.append(readBuff);
-  	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
-  	logMsgVal.append(" :: ");
-  	memset(readBuff, 0, sizeof(readBuff));
 	/************************************************************/
 	/************************************************************/
 	/************************************************************/
@@ -106,25 +67,13 @@ int main()
 	/************************************************************/
 	/*********************HMC5883L Z axis Raw********************/
 	/************************************************************/
+	
 	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_magn_z_raw/ \n");
-	hmcSysFile = fopen(result ,"r");
+	strcat(result,"/in_magn_z_raw");
+    	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
 
-	if (hmcSysFile !=NULL)
-	{
-		fgets(readBuff,10,hmcSysFile);
-		fclose(hmcSysFile);
-	}
-	else
-	{
-		strncpy(readBuff,"rf\n",9);
-	}
-
- 	logMsgVal.append("Z:"); //Z AXIS 
-  	lastLen=logMsgVal.length()+1;
-  	logMsgVal.append(readBuff);
-  	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
-  	logMsgVal.append(" :: ");
   	memset(readBuff, 0, sizeof(readBuff));
 	/************************************************************/
 	/************************************************************/
@@ -132,27 +81,14 @@ int main()
 	result[0] = 0;
 	/************************************************************/
 	/***********************HMC5883L Range***********************/
-	/************************************************************/
+	/************************************************************/;
+
 	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_magn_range/ \n");
-	hmcSysFile = fopen(result ,"r");
+	strcat(result,"/in_magn_range");
+    	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
 
-	if (hmcSysFile !=NULL)
-	{
-		fgets(readBuff,100,hmcSysFile);
-		fclose(hmcSysFile);
-	}
-	else
-	{
-		strncpy(readBuff,"rf\n",9);
-	}
-
- 	logMsgVal.append("R:");// RANGE
-  	lastLen=logMsgVal.length()+1;
-  	logMsgVal.append(readBuff);
-  	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
-  	logMsgVal.append(" :: ");
-  	memset(readBuff, 0, sizeof(readBuff));
 	/************************************************************/
 	/************************************************************/
 	/************************************************************/
@@ -160,40 +96,19 @@ int main()
 	/************************************************************/
 	/***********************HMC5883L Scale***********************/
 	/************************************************************/
+
+	
 	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_magn_scale/ \n");
-	hmcSysFile = fopen(result ,"r");
+	strcat(result,"/in_magn_scale");
+    	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
 
-	if (hmcSysFile !=NULL)
-	{
-		fgets(readBuff,100,hmcSysFile);
-		fclose(hmcSysFile);
-	}
-	else
-	{
-		strncpy(readBuff,"rf\n",9);
-	}
- 	logMsgVal.append("S:"); // SCALE
-  	logMsgVal.append(readBuff);
-  	logMsgVal.erase(logMsgVal.find("\n",lastLen),string::npos);
-  	memset(readBuff, 0, sizeof(readBuff));
 	/************************************************************/
 	/************************************************************/
 	/************************************************************/
-	result[0] = 0;
- 	// write to log via shakespeare
-  	logfile=Shakespeare::open_log ("/home/logs/telemetryACSLog",PROCESS);
-  	if(logfile!=NULL) 
-	{
-   		// Shakespeare::log(logfile, Shakespeare::WARNING, PROCESS, "This is a warning message");
-    	Shakespeare::log(logfile, Shakespeare::NOTICE, PROCESS,logMsgVal);
-       	// Shakespeare::log(logfile, Shakespeare::ERROR, PROCESS, "This is an error message");
-    	// Shakespeare::log(logfile, Shakespeare::URGENT, PROCESS, "This is an urgent message");
-   		// Shakespeare::log(logfile, Shakespeare::CRITICAL, PROCESS, "This is a critical message");
-  	}
-
-  	// close and exit
- 	fclose(logfile);
+	temp_data = 0;
+	result[0] = '\0';
   	return exitStatus;
 
 }   

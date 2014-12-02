@@ -7,13 +7,78 @@
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
 #include <shakespeare.h>
-
-#define PROCESS "telemetryPwrIna219"
+#include </home/spaceconcordia/CONSAT1/space-lib/utls/include/i2c-device.h>
+#define LOG_DIR "/home/logs/"
+uint8_t process_id = CS1_PWR_INA219;
+const string process = cs1_systems[process_id];
 
 using namespace std;
+using namespace I2CDevice;
 
 int main()
 {
+	int exitStatus=0;
+	string processName = "telemetryINA219",logMsgVal;
+	char* pPath;
+	pPath = getenv("INA2XXPATH");
+	char readBuff[100];
+	char * pEnd;
+	short int temp_data = 0;
+
+
+ 	/******** /sys/bus/i2c/devices/1-0040/curr1_input  :: current through Rsens ********/
+	char result[100];	
+	strcpy(result,pPath); // copy string one into the result.
+	strcat(result,"/curr1_input");
+    	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	/***********************************************************************************/
+
+    	temp_data = 0;
+	result[0] = '\0';
+
+
+
+	/******** /sys/bus/i2c/devices/1-0040/in0_input    :: voltage across Rsens ********/
+	
+	strcpy(result,pPath); // copy string one into the result.
+	strcat(result,"/in0_input");
+    	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+
+	/***********************************************************************************/
+
+    	temp_data = 0;
+	result[0] = '\0';
+
+	/******** /sys/bus/i2c/devices/1-0040/in1_input    :: voltage from Bus to Gnd ********/
+	
+	strcpy(result,pPath); // copy string one into the result.
+	strcat(result,"/in1_input");
+    	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	/***********************************************************************************/
+
+    	temp_data = 0;
+	result[0] = '\0';
+
+	/********  /sys/bus/i2c/devices/1-0040/power1_input :: power through Rsens ********/
+	
+	strcpy(result,pPath); // copy string one into the result.
+	strcat(result,"/power1_input");
+    	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	/***********************************************************************************/
+
+	temp_data = 0;
+	result[0] = '\0';
+  	return exitStatus;
+
+/*
   // main function variables 
   int exitStatus=0;
 
@@ -92,5 +157,5 @@ int main()
 
   Shakespeare::log(Shakespeare::NOTICE,PROCESS,logMsgVal);
 
-  return exitStatus;
+  return exitStatus;*/
 }

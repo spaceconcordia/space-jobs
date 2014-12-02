@@ -7,11 +7,70 @@
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
 #include "shakespeare.h"
+#include </home/spaceconcordia/CONSAT1/space-lib/utls/include/i2c-device.h>
+#define LOG_DIR "/home/logs/"
+uint8_t process_id = CS1_PWR_AD7998;
+const string process = cs1_systems[process_id];
 
+using namespace I2CDevice;
 using namespace std;
 
 int main()
 {
+	int exitStatus=0;
+	string processName = "telemetryPWR_AD7998",logMsgVal;
+	char* pPath;
+	pPath = getenv("AD7998x23PATH");
+	char readBuff[100];
+	char * pEnd;
+	short int temp_data = 0;
+    char result[100];
+ 	/****  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage1_raw : channel 2 - battery thermistor1 voltage ****/
+	strcpy(result,pPath); // copy string one into the result.
+	strcat(result,"/in_voltage1_raw");
+	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	/************************************************************************************************************/
+
+    	temp_data = 0;
+	result[0] = '\0';
+	
+	/****  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage3_raw : channel 4 - battery thermistor2 voltage ****/
+	strcpy(result,pPath); // copy string one into the result.
+	strcat(result,"/in_voltage3_raw");
+	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	/************************************************************************************************************/
+
+    	temp_data = 0;
+	result[0] = '\0';
+
+
+	/****  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage5_raw : channel 6 - solar panel1_3 voltage divider ****/
+	strcpy(result,pPath); // copy string one into the result.
+	strcat(result,"/in_voltage6_raw");
+	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	/***************************************************************************************************************/
+
+    	temp_data = 0;
+	result[0] = '\0';
+
+	/****  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage7_raw : channel 8 - solar panel2_4 voltage divider ****/
+	strcpy(result,pPath); // copy string one into the result.
+	strcat(result,"/in_voltage7_raw");
+	I2CRead(result,readBuff);
+    	temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	/***************************************************************************************************************/
+	temp_data = 0;
+	result[0] = '\0';
+  	return exitStatus;
+
+/*
   // main function variables 
   int exitStatus=0;
 
@@ -102,5 +161,5 @@ int main()
 
   // close and exit
   fclose(tgtLog);
-  return exitStatus;
+  return exitStatus;*/
 }

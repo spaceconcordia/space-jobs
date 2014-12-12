@@ -14,7 +14,7 @@
 #include <timer.h>
 
 #define processName "Job-Runner"
-#define ERRORBUFFERSIZE 35
+#define ERRORBUFFERSIZE 190
 #define LOGPATH "/tmp/job-runner"
 
 // This function forks a new subprocess, in which it runs the program `path`
@@ -26,11 +26,28 @@
 // If it has not exited or been killed, this function kills it.
 //
 // The function then returns.
+
+int validateFrequency (long frequency)
+{
+    if (frequency <= 0) {
+        return 1;
+    }
+    return 0;
+}
+
+int validateDuration (long duration) 
+{
+    if (duration <= 0) {
+        return 1;
+    }
+    return 0;
+}
+
 void fork_and_manage_child (const char * path, char ** args, long duration)
 {
    pid_t pid;
-
-   if (! (pid = fork())) 
+   pid = fork();
+   if ( pid != 0 ) 
    {
       execvp(path, args);
    } 
@@ -52,18 +69,22 @@ void fork_and_manage_child (const char * path, char ** args, long duration)
 
       val = waitpid(pid, &status, WNOHANG);
          
-      if( !( val > 0 && (WIFEXITED(status) || WIFSIGNALED(status)) ) ){
-
-         if (val == -1) {
+      // WIFEXITED(status) -> true if child terminated normally
+      // WIFSIGNALED(status) -> true if child process was terminated by a signal
+      if( !( val > 0 && (WIFEXITED(status) || WIFSIGNALED(status)) ) )
+      {  
+         if (val == -1) 
+         {  
             char errormsg[ERRORBUFFERSIZE] = {0}; // TODO test bounds
-            sprintf(errormsg, "Error while waitpid'ing: %s.", strerror(errno));
-            Shakespeare::log(Shakespeare::ERROR,path,errormsg);
+            snprintf(errormsg, ERRORBUFFERSIZE, "%s: waitpid(val)=>%d waitpid returned an error: %s.", path, val, strerror(errno));
+            Shakespeare::log(Shakespeare::ERROR,processName,errormsg);
          }
          
+         // try to kill the process
          if ( kill(pid, SIGKILL) ) {
             char killerrormsg[ERRORBUFFERSIZE] = {0};
-            sprintf(killerrormsg, "Error while killing: %s.", strerror(errno));
-            Shakespeare::log(Shakespeare::ERROR,path,killerrormsg);
+            snprintf(killerrormsg, ERRORBUFFERSIZE, "%s: Error while killing: %s.", path, strerror(errno));
+            Shakespeare::log(Shakespeare::ERROR,processName,killerrormsg);
          }
 
          // TODO - test this.
@@ -73,8 +94,8 @@ void fork_and_manage_child (const char * path, char ** args, long duration)
 
          if ( !( val > 0 && (WIFEXITED(status) || WIFSIGNALED(status)) ) ) {
             char childstatuserr[ERRORBUFFERSIZE] = {0};
-            sprintf(childstatuserr, "Child still alive...wait longer?");
-            Shakespeare::log(Shakespeare::ERROR,path,childstatuserr);
+            snprintf(childstatuserr, ERRORBUFFERSIZE, "%s: Child still alive...wait longer", path);
+            Shakespeare::log(Shakespeare::ERROR,processName,childstatuserr);
          }
       }
    }
@@ -88,23 +109,29 @@ int main(int argc, const char *argv[])
    }
 
    long frequency = atol(argv[1]);
-   // TODO - validate ??
+   if (validateFrequency(frequency) > 0) {
+     Shakespeare::log(Shakespeare::ERROR,processName,"Invalid frequency, must be greater than zero");
+   } // TODO - more validation
    
-   long duration  = atol(argv[2]);
-   // TODO - validate ??
+   long duration = atol(argv[2]);
+   if (validateDuration (duration) > 0) {
+     Shakespeare::log(Shakespeare::ERROR,processName,"Invalid duration, must be greater than zero");
+   } // TODO - more validation
 
    // Set up arguments for exec: the path is always the 3th argument
    const char * path = argv[3];
 
    // All of the rest of the arguments are arguments for the job. The path of
    // the job should also be passed to the job as argument zero.
+   // TODO replace with new
    char ** args = (char **) malloc(sizeof(char*) * (argc-2));
    
    // Copy the remaining args into an array of strings. Doing it this way because
    // they're const and need to be non-const. Maybe there's a better way though...
+   // TODO do this without malloc
    for(int i = 0; i < (argc-3); ++i){
       args[i] = strcpy(
-         (char*)malloc(sizeof(char) * (strlen(argv[i + 3]) + 1)),
+         (char*) malloc( sizeof(char) * (strlen (argv[i + 3]) + 1) ),
          argv[i + 3]);
    }
 
@@ -120,6 +147,9 @@ int main(int argc, const char *argv[])
       fork_and_manage_child(path, args, frequency);
    }
    
+   for(int i = 0; i < (argc-3); ++i) {
+     free (args[i]);
+   }
    free (args);
 
    return CS1_SUCCESS;

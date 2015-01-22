@@ -8,9 +8,11 @@
 #include <sys/fcntl.h>
 #include <shakespeare.h>
 #include </home/spaceconcordia/CONSAT1/space-lib/utls/include/i2c-device.h>
+#include "../inc/read-pwr-ina219.h"
 #define LOG_DIR "/home/logs/"
 #define PROCESS_NAME "telemetryINA219"
 #define PROCESS_PATH "INA2XXPATH"
+#define LOG_PATH "/home/logs"
 
 uint8_t process_id = CS1_PWR_INA219;
 const string process = cs1_systems[process_id];

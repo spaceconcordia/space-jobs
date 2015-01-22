@@ -9,84 +9,61 @@
 #include <shakespeare.h>
 #include </home/spaceconcordia/CONSAT1/space-lib/utls/include/i2c-device.h>
 #define LOG_DIR "/home/logs/"
+#define PROCESS_NAME "telemetryINA219"
+#define PROCESS_PATH "INA2XXPATH"
+
 uint8_t process_id = CS1_PWR_INA219;
 const string process = cs1_systems[process_id];
 
 using namespace std;
 using namespace I2CDevice;
 
+char readBuff[100];
+
 int main()
 {
 	int exitStatus=0;
-	string processName = "telemetryINA219",logMsgVal;
-	char* pPath;
-	pPath = getenv("INA2XXPATH");
-	char readBuff[100];
-	char * pEnd;
-	short int temp_data = 0;
-
+  char* pPath = getenv(PROCESS_PATH);
 
  	/******** /sys/bus/i2c/devices/1-0040/curr1_input  :: current through Rsens ********/
-	char result[100];	
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/curr1_input");
-    	I2CRead(result,readBuff);
-    	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	readDevice(pPath, "/curr1_input");
 	/***********************************************************************************/
-
-    	temp_data = 0;
-	result[0] = '\0';
-
-
 
 	/******** /sys/bus/i2c/devices/1-0040/in0_input    :: voltage across Rsens ********/
-	
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in0_input");
-    	I2CRead(result,readBuff);
-    	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
-
+	readDevice(pPath, "/in0_input")
 	/***********************************************************************************/
-
-    	temp_data = 0;
-	result[0] = '\0';
 
 	/******** /sys/bus/i2c/devices/1-0040/in1_input    :: voltage from Bus to Gnd ********/
-	
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in1_input");
-    	I2CRead(result,readBuff);
-    	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	readDevice(pPath, "/in1_input");
 	/***********************************************************************************/
-
-    	temp_data = 0;
-	result[0] = '\0';
 
 	/********  /sys/bus/i2c/devices/1-0040/power1_input :: power through Rsens ********/
-	
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/power1_input");
-    	I2CRead(result,readBuff);
-    	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	readDevice(pPath, "/power1_input");
 	/***********************************************************************************/
 
-	temp_data = 0;
-	result[0] = '\0';
-  	return exitStatus;
+	return exitStatus;
+
+}
+
+int readDevice (char* pPath, string deviceName) {
+	char result[100];
+	strcpy(result,pPath); // copy string one into the result.
+	strcat(result,deviceName);
+	I2CRead(result,readBuff);
+	short int temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+
+}
 
 /*
-  // main function variables 
+  // main function variables
   int exitStatus=0;
 
   // variables needed to call shakespeare log function
   string logMsgVal;
 
-  // *** note: for now we assume the ina2xx driver has already been instantiated 
-  // *** ina219 is hardwired to: 
+  // *** note: for now we assume the ina2xx driver has already been instantiated
+  // *** ina219 is hardwired to:
   //  bus: i2c-1
   //  address: 0x40
   // The data values can be read from the dev system if the existing module is loaded
@@ -121,7 +98,7 @@ int main()
     fclose(inaSysFile);
   } else {
     strncpy(readBuf,"readfail\n",9);
-  }  
+  }
   logMsgVal.append("shunt_v: ");
   lastLen=logMsgVal.length()+1;
   logMsgVal.append(readBuf);
@@ -158,4 +135,3 @@ int main()
   Shakespeare::log(Shakespeare::NOTICE,PROCESS,logMsgVal);
 
   return exitStatus;*/
-}

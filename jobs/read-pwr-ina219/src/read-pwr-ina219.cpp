@@ -7,7 +7,7 @@
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
 #include <shakespeare.h>
-#include </home/spaceconcordia/CONSAT1/space-lib/utls/include/i2c-device.h>
+#include </home/samsara/CONSAT1/space-lib/utls/include/i2c-device.h>
 #include "../inc/read-pwr-ina219.h"
 #define LOG_DIR "/home/logs/"
 #define PROCESS_NAME "telemetryINA219"
@@ -27,12 +27,14 @@ int main()
 	int exitStatus=0;
   char* pPath = getenv(PROCESS_PATH);
 
+
+
  	/******** /sys/bus/i2c/devices/1-0040/curr1_input  :: current through Rsens ********/
 	readDevice(pPath, "/curr1_input");
 	/***********************************************************************************/
 
 	/******** /sys/bus/i2c/devices/1-0040/in0_input    :: voltage across Rsens ********/
-	readDevice(pPath, "/in0_input")
+	readDevice(pPath, "/in0_input");
 	/***********************************************************************************/
 
 	/******** /sys/bus/i2c/devices/1-0040/in1_input    :: voltage from Bus to Gnd ********/
@@ -47,7 +49,7 @@ int main()
 
 }
 
-int readDevice (char* pPath, string deviceName) {
+int readDevice (char* pPath, const char* deviceName) {
 	char result[100];
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,deviceName);
@@ -55,6 +57,7 @@ int readDevice (char* pPath, string deviceName) {
 	short int temp_data = strtol(readBuff,NULL,0);
 	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
 
+	return CS1_SUCCESS;
 }
 
 /*

@@ -17,4 +17,4 @@
  */
 
 //Read data from an I2C device, and log the process and data using Shakespeare
-int readDevice (char* pPath, string deviceName) {}
+int readDevice (char* pPath, const char* deviceName);

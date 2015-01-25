@@ -8,6 +8,7 @@
 #include <sys/fcntl.h>
 #include "shakespeare.h"
 #include </home/samsara/CONSAT1/space-lib/utls/include/i2c-device.h>
+#include "../inc/read-pwr-ad7998.h"
 #define LOG_DIR "/home/logs/"
 #define PROCESS_NAME "telemetryPWR_AD7998"
 #define PROCESS_PATH "AD7998x23PATH"
@@ -25,8 +26,6 @@ int main()
 	int exitStatus=0;
 	char* pPath = getenv(PROCESS_PATH);
 
-	short int temp_data = 0;
-    char result[100];
  	/****  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage1_raw : channel 2 - battery thermistor1 voltage ****/
 	readDevice(pPath, "/in_voltage1_raw");
 	/************************************************************************************************************/

@@ -7,48 +7,123 @@ class read-acs-mag_Test : public ::testing::Test
     int z=0;
 };
 
-// Test writing to the helium device
-TEST_F(read-acs-mag_Test, GetCorrectI2CPath)
+
+
+/*********************HMC5883L X axis Raw********************/
+readDevice(pPath, "/in_magn_x_raw");
+/************************************************************/
+
+/*********************HMC5883L Y axis Raw********************/
+readDevice(pPath, "/in_magn_y_raw");
+/************************************************************/
+
+/*********************HMC5883L Z axis Raw********************/
+readDevice(pPath, "/in_magn_z_raw");
+/************************************************************/
+
+/***********************HMC5883L Range***********************/
+readDevice(pPath, "/in_magn_range");
+/************************************************************/;
+
+/***********************HMC5883L Scale***********************/
+readDevice(pPath, "/in_magn_scale");
+/************************************************************/
+
+
+
+//++++++++++++++++++++++++++++++++++++++readDevice() Testing++++++++++++++++++++++++++++++++++++++++
+
+// Test that the readDevice function returns success when passed the correct pPath and "/in_magn_x_raw" device
+TEST_F(read-acs-mag_Test, readFromCurr1)
 {
-    string test_identifier = "TeleACS";
-    char * output_path = {0};
-
-    int get_path_result = get_i2c_path(test_identifier, actual_path);
-
-    char * expected_path = "/sys/bus/i2c/foo/bar/";
+  /*********************HMC5883L X axis Raw********************/
+    int readDeviceReturn = readDevice(pPath, "/in_magn_x_raw");
 
     ASSERT_EQ(
         CS1_SUCCESS, // expected
-        get_path_result // actual
+        readDeviceReturn // actual
     );
-
-    for (z=0; z<36; z++) {
-        printf("z=%d\n",z);
-        ASSERT_EQ(
-            expected_path[z],
-            actual_path[z]
-        );
-    }
-
-    ASSERT_EQ(
-       CS1_NULL_POINTER,
-       get_path_result 
-    ); 
 }
 
-// TODO regenerate sample bytes from latest HE100 boards
-TEST_F(read-acs-mag_Test, BoilerPlateArray)
+// Test that the readDevice function returns success when passed the correct pPath and "/in_magn_y_raw" device
+TEST_F(read-acs-mag_Test, readFromIn0)
 {
+  /*********************HMC5883L Y axis Raw********************/
+    int readDeviceReturn = readDevice(pPath, "/in_magn_y_raw");
 
+    ASSERT_EQ(
+        CS1_SUCCESS, // expected
+        readDeviceReturn // actual
+    );
+}
 
-    unsigned char expected[36] = {0x01,0x02,0x03};
-    unsigned char actual[36] = {0x01,0x02,0x03};
-    
-    for (z=0; z<36; z++) {
-        printf("z=%d\n",z);
-        ASSERT_EQ(
-            expected[z],
-            actual[z]
-        );
-    }
-}   
+// Test that the readDevice function returns success when passed the correct pPath and "/in_magn_z_raw" device
+TEST_F(read-acs-mag_Test, readFromIn1)
+{
+  /*********************HMC5883L Z axis Raw********************/
+    int readDeviceReturn = readDevice(pPath, "/in_magn_z_raw");
+
+    ASSERT_EQ(
+        CS1_SUCCESS, // expected
+        readDeviceReturn // actual
+    );
+}
+
+// Test that the readDevice function returns success when passed the correct pPath and "/in_magn_range" device
+TEST_F(read-acs-mag_Test, readFromPower1)
+{
+  /*********************HMC5883L Range********************/
+    int readDeviceReturn = readDevice(pPath, "/in_magn_range");
+
+    ASSERT_EQ(
+        CS1_SUCCESS, // expected
+        readDeviceReturn // actual
+    );
+}
+
+// Test that the readDevice function returns success when passed the correct pPath and "/in_magn_scale" device
+TEST_F(read-acs-mag_Test, readFromPower1)
+{
+  /*********************HMC5883L Scale********************/
+    int readDeviceReturn = readDevice(pPath, "/in_magn_scale");
+
+    ASSERT_EQ(
+        CS1_SUCCESS, // expected
+        readDeviceReturn // actual
+    );
+}
+
+// Test that the readDevice function returns a null path error when passed a null path
+TEST_F(read-acs-mag_Test, readFromNullPath)
+{
+    int readDeviceReturn = readDevice(NULL, "/in_magn_x_raw");
+
+    ASSERT_EQ(
+        NULL_PATH_ERROR, // expected
+        readDeviceReturn // actual
+    );
+}
+
+// Test that the readDevice function returns a null device error when passed a null device
+TEST_F(read-acs-mag_Test, readFromNullDevice)
+{
+    int readDeviceReturn = readDevice(pPath, NULL);
+
+    ASSERT_EQ(
+        NULL_DEVICENAME_ERROR, // expected
+        readDeviceReturn // actual
+    );
+}
+
+// Test that the readDevice function returns a null path error when passed a null path and null device
+TEST_F(read-acs-mag_Test, readFromNullPathNullDevice)
+{
+    int readDeviceReturn = readDevice(NULL, NULL);
+
+    ASSERT_EQ(
+        NULL_PATH_ERROR, // expected
+        readDeviceReturn // actual
+    );
+}
+
+//---------------------------------------------------------------------------------------------------------

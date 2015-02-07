@@ -8,127 +8,79 @@
 #include <sys/fcntl.h>
 #include <SpaceDecl.h>
 #include <shakespeare.h>
-#include </home/spaceconcordia/CONSAT1/space-lib/utls/include/i2c-device.h>
+#include </home/samsara/CONSAT1/space-lib/utls/include/i2c-device.h>
+#include "../inc/read-temp-EBPL.h"
 #define LOG_DIR "/home/logs/"
+#define PROCESS_PATH "INA2XXPATH"
+#define LOG_PATH "/home/logs"
+
+//Error codes
+#define NULL_PATH_ERROR 2;
+#define NULL_DEVICENAME_ERROR 3;
+
 uint8_t process_id = CS1_TEMP_EBPL;
 const string process = cs1_systems[process_id];
 
 using namespace std;
 using namespace I2CDevice;
 
+char readBuff[100];
+
 int main()
 {
 	int exitStatus=0;
-	string processName = "telemetryEBPL",logMsgVal;
-	char* pPath;
-	pPath = getenv("AD7998x22PATH");
-	char readBuff[100];
-	char * pEnd;
-	short int temp_data = 0;
+	char* pPath = getenv("AD7998x22PATH");
 
 	/*********************AD7998 Temperature Sensor 0********************/
-
-	char result[100];	
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_voltage0_raw");
-    	I2CRead(result,readBuff);
-    	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	readDevice(pPath, "/in_voltage0_raw");
 	/*****************************************************************************/
-    	temp_data = 0;
-	result[0] ='\0';
 
 	/*********************AD7998 Temperature Sensor 1********************/
-
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_voltage1_raw");
-	I2CRead(result,readBuff);
-    	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	readDevice(pPath, "/in_voltage1_raw");
 	/*****************************************************************************/
-
-    	temp_data = 0;
-	result[0] = '\0';
-
 
 	/*********************AD7998 Battery Temperature Sensor 1********************/
-
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_voltage2_raw");
-	I2CRead(result,readBuff);
-	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	readDevice(pPath, "/in_voltage2_raw");
 	/*****************************************************************************/
-
-    	temp_data = 0; 
-	result[0] = '\0';
 
 	/*********************AD7998 Battery Temperature Sensor 0********************/
-
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_voltage3_raw");
-	I2CRead(result,readBuff);
-    	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	readDevice(pPath, "/in_voltage3_raw");
 	/*****************************************************************************/
 
-    	temp_data = 0;
-	result[0] = '\0';
-
 	/*********************AD7998 Temperature Sensor 2********************/
-	
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_voltage4_raw");
-	I2CRead(result,readBuff);
-	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	readDevice(pPath, "/in_voltage4_raw");
 	/********************************************************************************/
-
-    	temp_data = 0;
-	result[0] = '\0';
-
 
 	/*********************AD7998 Temperature Sensor 3********************/
-
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_voltage5_raw");
-	I2CRead(result,readBuff);
-	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
-
+	readDevice(pPath, "/in_voltage5_raw");
 	/********************************************************************************/
-
-    	temp_data = 0;
-	result[0] = '\0';
 
 	/*********************AD7998 Payload Temperature Sensor********************/
-
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_voltage6_raw");
-	I2CRead(result,readBuff);
-	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
-
+	readDevice(pPath, "/in_voltage6_raw");
 	/********************************************************************************/
-
-    	temp_data = 0;
-	result[0] = '\0';
-
 
 	/*********************AD7998 Elec Bay Temperature Sensor********************/
-
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_voltage7_raw");
-	I2CRead(result,readBuff);
-	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+	readDevice(pPath, "/in_voltage7_raw");
 
 	/********************************************************************************/
 
-	temp_data = 0;
-	result[0] = '\0';
-  	return exitStatus;
-
+  return exitStatus;
 
 }
 
+int readDevice (char* pPath, const char* deviceName) {
+	if(pPath == NULL)
+		return NULL_PATH_ERROR;
+
+	if (deviceName == NULL)
+		return NULL_DEVICENAME_ERROR;
+
+	char result[100];
+	strcpy(result,pPath); // copy string one into the result.
+	strcat(result,deviceName);
+	I2CRead(result,readBuff);
+	short int temp_data = strtol(readBuff,NULL,0);
+	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
+
+	return CS1_SUCCESS;
+}

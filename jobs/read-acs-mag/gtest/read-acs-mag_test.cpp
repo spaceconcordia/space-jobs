@@ -8,29 +8,6 @@ class read-acs-mag_Test : public ::testing::Test
 };
 
 
-
-/*********************HMC5883L X axis Raw********************/
-readDevice(pPath, "/in_magn_x_raw");
-/************************************************************/
-
-/*********************HMC5883L Y axis Raw********************/
-readDevice(pPath, "/in_magn_y_raw");
-/************************************************************/
-
-/*********************HMC5883L Z axis Raw********************/
-readDevice(pPath, "/in_magn_z_raw");
-/************************************************************/
-
-/***********************HMC5883L Range***********************/
-readDevice(pPath, "/in_magn_range");
-/************************************************************/;
-
-/***********************HMC5883L Scale***********************/
-readDevice(pPath, "/in_magn_scale");
-/************************************************************/
-
-
-
 //++++++++++++++++++++++++++++++++++++++readDevice() Testing++++++++++++++++++++++++++++++++++++++++
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_magn_x_raw" device

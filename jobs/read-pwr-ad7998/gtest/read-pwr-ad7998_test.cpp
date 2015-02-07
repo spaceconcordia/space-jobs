@@ -6,34 +6,89 @@ class Read_Pwr_Ad7998_Test : public ::testing::Test
         virtual void SetUp() { }
         int z=0;
 };
-//++++++++++++++++++++++++++++++++++++++logToShakespeare() Testing++++++++++++++++++++++++++++++++++++++++
 
-// The same process that leads to the final char array (timeAndPeakData) for logging is repeated here,
-// assuming proper data sent to binaryPeakMagData and detecionTime, then the logToShakespeare() function is called with
-// to log
-TEST_F(Read_Pwr_Ad7998_Test, logCorrectDataNoticeShakespeare)
+
+//++++++++++++++++++++++++++++++++++++++readDevice() Testing++++++++++++++++++++++++++++++++++++++++
+
+// Test that the readDevice function returns success when passed the correct pPath and "in_voltage1_raw" device
+TEST_F(Read_Pwr_Ina219_Test, readFromInVoltage1)
 {
-    clock_t start_time = clock();
-    //The expected data from I2C should be a 12-bit char array
-    char binaryPeakMagData[12 + 1] = {0,0,0,0,1,0,1,0,1,0,1,0};
-    char detectionTimeData[10];
-    //Determine etermine elapsed time for detection
-    clock_t elapsed_time = clock() - start_time;
+    /****  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage1_raw : channel 2 - battery thermistor1 voltage ****/
+    int readDeviceReturn = readDevice(pPath, "/in_voltage1_raw");
 
-    //Store peak detection time to temporary variable
-    float detectionTime = ((float)elapsed_time/CLOCKS_PER_SEC);
-    sprintf(detectionTimeData, "%f", detectionTime);
-
-    //Log peak magnitude and detection times using Shakspeare
-    char *temp = strcat(detectionTimeData, " ");
-    char *timeAndPeakData = strcat(temp, binaryPeakMagData);
-
-    int logReturn = logToShakespeare(timeAndPeakData, "NOTICE");
     ASSERT_EQ(
         CS1_SUCCESS, // expected
-        logReturn // actual
+        readDeviceReturn // actual
     );
 }
 
+// Test that the readDevice function returns success when passed the correct pPath and "/in_voltage3_raw" device
+TEST_F(Read_Pwr_Ad7998_Test, readFromInVoltage3)
+{
+    /****  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage3_raw : channel 4 - battery thermistor2 voltage ****/
+    int readDeviceReturn = readDevice(pPath, "/in_voltage3_raw");
+
+    ASSERT_EQ(
+        CS1_SUCCESS, // expected
+        readDeviceReturn // actual
+    );
+}
+
+// Test that the readDevice function returns success when passed the correct pPath and "/in_voltage6_raw" device
+TEST_F(Read_Pwr_Ina219_Test, readFromInVoltage6)
+{
+    /****  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage5_raw : channel 6 - solar panel1_3 voltage divider ****/
+    int readDeviceReturn = readDevice(pPath, "/in_voltage6_raw");
+
+    ASSERT_EQ(
+        CS1_SUCCESS, // expected
+        readDeviceReturn // actual
+    );
+}
+
+// Test that the readDevice function returns success when passed the correct pPath and "/in_voltage7_raw" device
+TEST_F(Read_Pwr_Ina219_Test, readFromInVoltage7)
+{
+      /****  /sys/bus/i2c/devices/1-0023/iio:device3/in_voltage7_raw : channel 8 - solar panel2_4 voltage divider ****/
+    int readDeviceReturn = readDevice(pPath, "/in_voltage7_raw");
+
+    ASSERT_EQ(
+        CS1_SUCCESS, // expected
+        readDeviceReturn // actual
+    );
+}
+
+// Test that the readDevice function returns a null path error when passed a null path
+TEST_F(Read_Pwr_Ina219_Test, readFromNullPath)
+{
+    int readDeviceReturn = readDevice(NULL, "/in_voltage1_raw");
+
+    ASSERT_EQ(
+        NULL_PATH_ERROR, // expected
+        readDeviceReturn // actual
+    );
+}
+
+// Test that the readDevice function returns a null device error when passed a null device
+TEST_F(Read_Pwr_Ina219_Test, readFromNullDevice)
+{
+    int readDeviceReturn = readDevice(pPath, NULL);
+
+    ASSERT_EQ(
+        NULL_DEVICENAME_ERROR, // expected
+        readDeviceReturn // actual
+    );
+}
+
+// Test that the readDevice function returns a null path error when passed a null path and null device
+TEST_F(Read_Pwr_Ina219_Test, readFromNullPathNullDevice)
+{
+    int readDeviceReturn = readDevice(NULL, NULL);
+
+    ASSERT_EQ(
+        NULL_PATH_ERROR, // expected
+        readDeviceReturn // actual
+    );
+}
 
 //---------------------------------------------------------------------------------------------------------

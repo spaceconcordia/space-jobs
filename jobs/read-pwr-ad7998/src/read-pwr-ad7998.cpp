@@ -16,6 +16,10 @@
 uint8_t process_id = CS1_PWR_AD7998;
 const string process = cs1_systems[process_id];
 
+//Error codes
+#define NULL_PATH_ERROR 2;
+#define NULL_DEVICENAME_ERROR 3;
+
 using namespace I2CDevice;
 using namespace std;
 
@@ -46,6 +50,12 @@ int main()
 }
 
 int readDevice (char* pPath, const char* deviceName) {
+	if(pPath == NULL)
+		return NULL_PATH_ERROR;
+
+	if (deviceName == NULL)
+		return NULL_DEVICENAME_ERROR;
+
 	char result[100];
 	strcpy(result,pPath); // copy string one into the result.
 	strcat(result,deviceName);

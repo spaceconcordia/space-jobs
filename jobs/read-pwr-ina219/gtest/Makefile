@@ -12,16 +12,22 @@
 # project, except GTEST_HEADERS, which you can use in your own targets
 # but shouldn't modify.
 
-# Points to the root of Google Test, relative to where this file is.
-# Remember to tweak this if you move this file.
-GTEST_DIR = ../../gtest-1.7.0
-
 # Where to find user code.
+PROJECT_DIR = ../../../..
 USER_DIR = ../
 SHAKES_DIR = ../../space-lib/shakespeare
 GLOBAL_INC_DIR = ../../space-lib/include/
 UTILS_DIR = ../../space-lib/utls/
 INCPATH=-I../inc/ -I$(SHAKES_DIR)/inc/ -I$(GLOBAL_INC_DIR) -I$(UTILS_DIR)/include
+
+LIBPATH=-L$(UTLS_DIR)/lib
+
+LIBS=$(LIBPATH) -lcs1_utls -lrt
+
+# Points to the root of Google Test, relative to where this file is.
+# Remember to tweak this if you move this file.
+GTEST_DIR = $(PROJECT_DIR)/gtest-1.7.0
+
 
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
@@ -33,7 +39,7 @@ CXXFLAGS += -g -Wall -Wextra -pthread
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = space-payload_test
+TESTS = read-pwr-ina219_test
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.

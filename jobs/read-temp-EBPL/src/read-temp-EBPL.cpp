@@ -11,7 +11,7 @@
 #include </home/samsara/CONSAT1/space-lib/utls/include/i2c-device.h>
 #include "../inc/read-temp-EBPL.h"
 #define LOG_DIR "/home/logs/"
-#define PROCESS_PATH "INA2XXPATH"
+#define PROCESS_PATH "AD7998x22PATH"
 #define LOG_PATH "/home/logs"
 
 //Error codes
@@ -29,10 +29,10 @@ char readBuff[100];
 int main()
 {
 	int exitStatus=0;
-	char* pPath = getenv("AD7998x22PATH");
+	char* pPath = getenv("");
 
 	/*********************AD7998 Temperature Sensor 0********************/
-	readDevice(pPath, "/in_voltage0_raw");
+	readDevice(pPath, PROCESS_PATH);
 	/*****************************************************************************/
 
 	/*********************AD7998 Temperature Sensor 1********************/

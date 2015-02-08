@@ -20,6 +20,10 @@ SHAKES_DIR = ../../../space-lib/shakespeare
 GLOBAL_INC_DIR = ../../../space-lib/include/
 INCPATH=-I../inc/ -I$(SHAKES_DIR)/inc/
 
+LIBPATH=-L$(UTLS_DIR)/lib
+
+LIBS=$(LIBPATH) -lcs1_utls -lrt
+
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
 # the compiler doesn't generate warnings in Google Test headers.

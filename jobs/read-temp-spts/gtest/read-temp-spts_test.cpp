@@ -25,7 +25,7 @@ TEST_F(Read_Temp_spts_Test, readFromInVoltage0)
 
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_voltage1_raw" device
-TEST_F(Read_Temp_spts_Test, readFromInVoltage3)
+TEST_F(Read_Temp_spts_Test, readFromInVoltage1)
 {
     /*********************AD7998 Temperature Sensor 1********************/
     int readDeviceReturn = readDevice(pPath, "/in_voltage1_raw");
@@ -38,7 +38,7 @@ TEST_F(Read_Temp_spts_Test, readFromInVoltage3)
 
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_voltage2_raw" device
-TEST_F(Read_Temp_spts_Test, readFromInVoltage6)
+TEST_F(Read_Temp_spts_Test, readFromInVoltage2)
 {
     /*********************AD7998 Battery Temperature Sensor 1********************/
     int readDeviceReturn = readDevice(pPath, "/in_voltage2_raw");
@@ -51,7 +51,7 @@ TEST_F(Read_Temp_spts_Test, readFromInVoltage6)
 
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_voltage3_raw" device
-TEST_F(Read_Temp_spts_Test, readFromInVoltage7)
+TEST_F(Read_Temp_spts_Test, readFromInVoltage3)
 {
     /*********************AD7998 Battery Temperature Sensor 0********************/
     int readDeviceReturn = readDevice(pPath, "/in_voltage3_raw");
@@ -64,7 +64,7 @@ TEST_F(Read_Temp_spts_Test, readFromInVoltage7)
 
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_voltage4_raw" device
-TEST_F(Read_Temp_spts_Test, readFromInVoltage7)
+TEST_F(Read_Temp_spts_Test, readFromInVoltage4)
 {
     /*********************AD7998 Battery Temperature Sensor 2********************/
     int readDeviceReturn = readDevice(pPath, "/in_voltage4_raw");
@@ -77,7 +77,7 @@ TEST_F(Read_Temp_spts_Test, readFromInVoltage7)
 
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_voltage5_raw" device
-TEST_F(Read_Temp_spts_Test, readFromInVoltage7)
+TEST_F(Read_Temp_spts_Test, readFromInVoltage5)
 {
     /*********************AD7998 Temperature Sensor 3********************/
     int readDeviceReturn = readDevice(pPath, "/in_voltage5_raw");
@@ -90,7 +90,7 @@ TEST_F(Read_Temp_spts_Test, readFromInVoltage7)
 
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_voltage6_raw" device
-TEST_F(Read_Temp_spts_Test, readFromInVoltage7)
+TEST_F(Read_Temp_spts_Test, readFromInVoltage6)
 {
     /*********************AD7998 Payload Temperature Sensor********************/
     int readDeviceReturn = readDevice(pPath, "/in_voltage6_raw");

@@ -11,7 +11,7 @@ class read-acs-mag_Test : public ::testing::Test
 //++++++++++++++++++++++++++++++++++++++readDevice() Testing++++++++++++++++++++++++++++++++++++++++
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_magn_x_raw" device
-TEST_F(read-acs-mag_Test, readFromCurr1)
+TEST_F(read-acs-mag_Test, readFromMagX)
 {
   /*********************HMC5883L X axis Raw********************/
     int readDeviceReturn = readDevice(pPath, "/in_magn_x_raw");
@@ -23,7 +23,7 @@ TEST_F(read-acs-mag_Test, readFromCurr1)
 }
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_magn_y_raw" device
-TEST_F(read-acs-mag_Test, readFromIn0)
+TEST_F(read-acs-mag_Test, readFromMagY)
 {
   /*********************HMC5883L Y axis Raw********************/
     int readDeviceReturn = readDevice(pPath, "/in_magn_y_raw");
@@ -35,7 +35,7 @@ TEST_F(read-acs-mag_Test, readFromIn0)
 }
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_magn_z_raw" device
-TEST_F(read-acs-mag_Test, readFromIn1)
+TEST_F(read-acs-mag_Test, readFromMagZ)
 {
   /*********************HMC5883L Z axis Raw********************/
     int readDeviceReturn = readDevice(pPath, "/in_magn_z_raw");
@@ -47,7 +47,7 @@ TEST_F(read-acs-mag_Test, readFromIn1)
 }
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_magn_range" device
-TEST_F(read-acs-mag_Test, readFromPower1)
+TEST_F(read-acs-mag_Test, readFromMagRange)
 {
   /*********************HMC5883L Range********************/
     int readDeviceReturn = readDevice(pPath, "/in_magn_range");
@@ -59,7 +59,7 @@ TEST_F(read-acs-mag_Test, readFromPower1)
 }
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_magn_scale" device
-TEST_F(read-acs-mag_Test, readFromPower1)
+TEST_F(read-acs-mag_Test, readFromMagScale)
 {
   /*********************HMC5883L Scale********************/
     int readDeviceReturn = readDevice(pPath, "/in_magn_scale");

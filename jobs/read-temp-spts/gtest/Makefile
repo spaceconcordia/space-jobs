@@ -14,15 +14,20 @@
 
 # Where to find user code.
 PROJECT_DIR = ../../../..
-UTILS_DIR = ../../space-lib/utls/
 USER_DIR = ../
-SHAKES_DIR = ../../../space-lib/shakespeare
-GLOBAL_INC_DIR = ../../../space-lib/include/
-INCPATH=-I../inc/ -I$(SHAKES_DIR)/inc/
+SHAKES_DIR = ../../space-lib/shakespeare
+GLOBAL_INC_DIR = ../../space-lib/include/
+UTILS_DIR = ../../space-lib/utls/
+INCPATH=-I../inc/ -I$(SHAKES_DIR)/inc/ -I$(GLOBAL_INC_DIR) -I$(UTILS_DIR)/include
 
 LIBPATH=-L$(UTLS_DIR)/lib
 
 LIBS=$(LIBPATH) -lcs1_utls -lrt
+
+# Points to the root of Google Test, relative to where this file is.
+# Remember to tweak this if you move this file.
+GTEST_DIR = $(PROJECT_DIR)/gtest-1.7.0
+
 
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
@@ -32,13 +37,9 @@ CPPFLAGS += -isystem $(GTEST_DIR)/include
 # Flags passed to the C++ compiler.
 CXXFLAGS += -g -Wall -Wextra -pthread
 
-# Points to the root of Google Test, relative to where this file is.
-# Remember to tweak this if you move this file.
-GTEST_DIR = $(PROJECT_DIR)/gtest-1.7.0
-
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = read-acs-mag_test
+TESTS = read-temp-spts_test
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -78,14 +79,14 @@ gtest_main.a : gtest-all.o gtest_main.o
 
 ###########################
 
-read-acs-mag.o : $(USER_DIR)/src/read-acs-mag.cpp $(SHAKES_DIR)/inc/shakespeare.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(USER_DIR)/src/read-acs-mag.cpp
+read-temp-spts.o : $(USER_DIR)/src/read-temp-spts.cpp $(SHAKES_DIR)/inc/shakespeare.h $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(USER_DIR)/src/read-temp-spts.cpp
 
 shakespeare.o : $(SHAKES_DIR)/src/shakespeare.cpp $(SHAKES_DIR)/inc/shakespeare.h $(GTEST_HEADERS)
 	$(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(SHAKES_DIR)/src/shakespeare.cpp
 
-read-acs-mag_test : read-acs-mag.o shakespeare.o gtest_main.a
+read-temp-spts_test : read-temp-spts.o shakespeare.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -lrt
 
-read-acs-mag_test.o : read-acs-mag_test.cpp $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c read-acs-mag_test.cpp
+read-temp-spts_test.o : read-temp-spts_test.cpp $(GTEST_HEADERS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c read-temp-spts_test.cpp

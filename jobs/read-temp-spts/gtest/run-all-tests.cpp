@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "read-acs-mag_test.cpp"
+#include "read-temp-spts_test.cpp"
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);

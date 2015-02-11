@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "read-acs-mag_test.cpp"
+#include "read-pwr-ina219.cpp"
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);

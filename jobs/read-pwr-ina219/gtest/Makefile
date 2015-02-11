@@ -14,15 +14,20 @@
 
 # Where to find user code.
 PROJECT_DIR = ../../../..
-UTILS_DIR = ../../space-lib/utls/
 USER_DIR = ../
-SHAKES_DIR = ../../../space-lib/shakespeare
-GLOBAL_INC_DIR = ../../../space-lib/include/
-INCPATH=-I../inc/ -I$(SHAKES_DIR)/inc/
+SHAKES_DIR = ../../space-lib/shakespeare
+GLOBAL_INC_DIR = ../../space-lib/include/
+UTILS_DIR = ../../space-lib/utls/
+INCPATH=-I../inc/ -I$(SHAKES_DIR)/inc/ -I$(GLOBAL_INC_DIR) -I$(UTILS_DIR)/include
 
 LIBPATH=-L$(UTLS_DIR)/lib
 
 LIBS=$(LIBPATH) -lcs1_utls -lrt
+
+# Points to the root of Google Test, relative to where this file is.
+# Remember to tweak this if you move this file.
+GTEST_DIR = $(PROJECT_DIR)/gtest-1.7.0
+
 
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
@@ -32,13 +37,9 @@ CPPFLAGS += -isystem $(GTEST_DIR)/include
 # Flags passed to the C++ compiler.
 CXXFLAGS += -g -Wall -Wextra -pthread
 
-# Points to the root of Google Test, relative to where this file is.
-# Remember to tweak this if you move this file.
-GTEST_DIR = $(PROJECT_DIR)/gtest-1.7.0
-
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = read-acs-mag_test
+TESTS = read-pwr-ina219_test
 
 # All Google Test headers.  Usually you shouldn't change this
 # definition.
@@ -50,7 +51,7 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 all : $(TESTS)
 
 clean :
-	rm -f $(TESTS) gtest.a gtest_main.a *.o
+  rm -f $(TESTS) gtest.a gtest_main.a *.o
 
 # Builds gtest.a and gtest_main.a.
 
@@ -63,29 +64,29 @@ GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 # conservative and not optimized.  This is fine as Google Test
 # compiles fast and for ordinary users its source rarely changes.
 gtest-all.o : $(GTEST_SRCS_)
-	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
+  $(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
             $(GTEST_DIR)/src/gtest-all.cc
 
 gtest_main.o : $(GTEST_SRCS_)
-	$(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
+  $(CXX) $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c \
             $(GTEST_DIR)/src/gtest_main.cc
 
 gtest.a : gtest-all.o
-	$(AR) $(ARFLAGS) $@ $^
+  $(AR) $(ARFLAGS) $@ $^
 
 gtest_main.a : gtest-all.o gtest_main.o
-	$(AR) $(ARFLAGS) $@ $^
+  $(AR) $(ARFLAGS) $@ $^
 
 ###########################
 
-read-acs-mag.o : $(USER_DIR)/src/read-acs-mag.cpp $(SHAKES_DIR)/inc/shakespeare.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(USER_DIR)/src/read-acs-mag.cpp
+read-pwr-ina219.o : $(USER_DIR)/src/read-pwr-ina219.cpp $(SHAKES_DIR)/inc/shakespeare.h $(GLOBAL_INC_DIR)/SpaceDecl.h $(GTEST_HEADERS)
+  $(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(USER_DIR)/src/read-pwr-ina219.cpp
 
-shakespeare.o : $(SHAKES_DIR)/src/shakespeare.cpp $(SHAKES_DIR)/inc/shakespeare.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(SHAKES_DIR)/src/shakespeare.cpp
+shakespeare.o : $(SHAKES_DIR)/src/shakespeare.cpp $(SHAKES_DIR)/inc/shakespeare.h $(GLOBAL_INC_DIR)/SpaceDecl.h $(GTEST_HEADERS)
+  $(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(SHAKES_DIR)/src/shakespeare.cpp
 
-read-acs-mag_test : read-acs-mag.o shakespeare.o gtest_main.a
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -lrt
+read-pwr-ina219_test : read-pwr-ina219.o shakespeare.o gtest_main.a
+  $(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -L$(UTILS_DIR)/lib -lcs1_utls -lrt
 
-read-acs-mag_test.o : read-acs-mag_test.cpp $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c read-acs-mag_test.cpp
+read-pwr-ina219_test.o : read-pwr-ina219.cpp $(GTEST_HEADERS)
+  $(CXX) $(CPPFLAGS) $(CXXFLAGS) -c read-pwr-ina219.cpp

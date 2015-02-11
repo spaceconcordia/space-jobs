@@ -15,100 +15,67 @@ rf - > read failed
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
 #include <shakespeare.h>
-#include </home/spaceconcordia/CONSAT1/space-lib/utls/include/i2c-device.h>
+#include </home/samsara/CONSAT1/space-lib/utls/include/i2c-device.h>
+#include "../inc/read-acs-mag.h"
 #define LOG_DIR "/home/logs/"
+#define PROCESS_PATH "HMC5843PATH"
+#define LOG_PATH "/home/logs"
+
+//Error codes
+#define NULL_PATH_ERROR 2;
+#define NULL_DEVICENAME_ERROR 3;
+
 uint8_t process_id = CS1_ACS_MAG;
 const string process = cs1_systems[process_id];
 
-
-
 using namespace std;
 using namespace I2CDevice;
+
+char readBuff[100];
 
 int main()
 {
 
 	int exitStatus=0;
-	string processName = "telemetryMAG",logMsgVal;
-	char* pPath;
-	pPath = getenv("HMC5843PATH");
-	char readBuff[100];
-	char * pEnd;
-	short int temp_data = 0;
+	char* pPath = getenv("HMC5843PATH");
 
-
-	/************************************************************/
 	/*********************HMC5883L X axis Raw********************/
+	readDevice(pPath, "/in_magn_x_raw");
 	/************************************************************/
-	char result[100];	
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_magn_x_raw");
-    	I2CRead(result,readBuff);
-    	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
 
-	/************************************************************/
 	/*********************HMC5883L Y axis Raw********************/
+	readDevice(pPath, "/in_magn_y_raw");
 	/************************************************************/
 
-
-	
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_magn_y_raw");
-    	I2CRead(result,readBuff);
-    	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
-
-
-	/************************************************************/
-	/************************************************************/
-	/************************************************************/
-	result[0] = 0;
-	/************************************************************/
 	/*********************HMC5883L Z axis Raw********************/
+	readDevice(pPath, "/in_magn_z_raw");
 	/************************************************************/
-	
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_magn_z_raw");
-    	I2CRead(result,readBuff);
-    	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
 
-  	memset(readBuff, 0, sizeof(readBuff));
-	/************************************************************/
-	/************************************************************/
-	/************************************************************/
-	result[0] = 0;
-	/************************************************************/
 	/***********************HMC5883L Range***********************/
+	readDevice(pPath, "/in_magn_range");
 	/************************************************************/;
 
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_magn_range");
-    	I2CRead(result,readBuff);
-    	temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
-
-	/************************************************************/
-	/************************************************************/
-	/************************************************************/
-	result[0] = 0;
-	/************************************************************/
 	/***********************HMC5883L Scale***********************/
+	readDevice(pPath, "/in_magn_scale");
 	/************************************************************/
 
-	
+  return exitStatus;
+
+}
+
+int readDevice (char* pPath, const char* deviceName) {
+	if(pPath == NULL)
+		return NULL_PATH_ERROR;
+
+	if (deviceName == NULL)
+		return NULL_DEVICENAME_ERROR;
+
+	char result[100];
 	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,"/in_magn_scale");
-    	I2CRead(result,readBuff);
-    	temp_data = strtol(readBuff,NULL,0);
+	strcat(result,deviceName);
+	I2CRead(result,readBuff);
+	short int temp_data = strtol(readBuff,NULL,0);
 	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
 
-	/************************************************************/
-	/************************************************************/
-	/************************************************************/
-	temp_data = 0;
-	result[0] = '\0';
-  	return exitStatus;
-
-}   
+	return CS1_SUCCESS;
+}

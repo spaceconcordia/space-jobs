@@ -12,17 +12,15 @@
 # project, except GTEST_HEADERS, which you can use in your own targets
 # but shouldn't modify.
 
+# Points to the root of Google Test, relative to where this file is.
+# Remember to tweak this if you move this file.
+GTEST_DIR = ../../../gtest-1.7.0
+
 # Where to find user code.
-PROJECT_DIR = ../../../..
-UTILS_DIR = ../../space-lib/utls/
 USER_DIR = ../
 SHAKES_DIR = ../../../space-lib/shakespeare
 GLOBAL_INC_DIR = ../../../space-lib/include/
 INCPATH=-I../inc/ -I$(SHAKES_DIR)/inc/
-
-LIBPATH=-L$(UTLS_DIR)/lib
-
-LIBS=$(LIBPATH) -lcs1_utls -lrt
 
 # Flags passed to the preprocessor.
 # Set Google Test's header directory as a system directory, such that
@@ -31,10 +29,6 @@ CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 # Flags passed to the C++ compiler.
 CXXFLAGS += -g -Wall -Wextra -pthread
-
-# Points to the root of Google Test, relative to where this file is.
-# Remember to tweak this if you move this file.
-GTEST_DIR = $(PROJECT_DIR)/gtest-1.7.0
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
@@ -82,7 +76,7 @@ read-acs-mag.o : $(USER_DIR)/src/read-acs-mag.cpp $(SHAKES_DIR)/inc/shakespeare.
 	$(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(USER_DIR)/src/read-acs-mag.cpp
 
 shakespeare.o : $(SHAKES_DIR)/src/shakespeare.cpp $(SHAKES_DIR)/inc/shakespeare.h $(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(SHAKES_DIR)/src/shakespeare.cpp
+	$(CXX) $(CPPFLAGS) $(INCPATH) $(CXXFLAGS) -c $(SHAKES_DIR)/src/shakespeare.cpp 
 
 read-acs-mag_test : read-acs-mag.o shakespeare.o gtest_main.a
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -lpthread $^ -o $@ -lrt

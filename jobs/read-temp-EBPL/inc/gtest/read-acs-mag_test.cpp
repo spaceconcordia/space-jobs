@@ -8,10 +8,33 @@ class read-acs-mag_Test : public ::testing::Test
 };
 
 
+
+/*********************HMC5883L X axis Raw********************/
+readDevice(pPath, "/in_magn_x_raw");
+/************************************************************/
+
+/*********************HMC5883L Y axis Raw********************/
+readDevice(pPath, "/in_magn_y_raw");
+/************************************************************/
+
+/*********************HMC5883L Z axis Raw********************/
+readDevice(pPath, "/in_magn_z_raw");
+/************************************************************/
+
+/***********************HMC5883L Range***********************/
+readDevice(pPath, "/in_magn_range");
+/************************************************************/;
+
+/***********************HMC5883L Scale***********************/
+readDevice(pPath, "/in_magn_scale");
+/************************************************************/
+
+
+
 //++++++++++++++++++++++++++++++++++++++readDevice() Testing++++++++++++++++++++++++++++++++++++++++
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_magn_x_raw" device
-TEST_F(read-acs-mag_Test, readFromMagX)
+TEST_F(read-acs-mag_Test, readFromCurr1)
 {
   /*********************HMC5883L X axis Raw********************/
     int readDeviceReturn = readDevice(pPath, "/in_magn_x_raw");
@@ -23,7 +46,7 @@ TEST_F(read-acs-mag_Test, readFromMagX)
 }
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_magn_y_raw" device
-TEST_F(read-acs-mag_Test, readFromMagY)
+TEST_F(read-acs-mag_Test, readFromIn0)
 {
   /*********************HMC5883L Y axis Raw********************/
     int readDeviceReturn = readDevice(pPath, "/in_magn_y_raw");
@@ -35,7 +58,7 @@ TEST_F(read-acs-mag_Test, readFromMagY)
 }
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_magn_z_raw" device
-TEST_F(read-acs-mag_Test, readFromMagZ)
+TEST_F(read-acs-mag_Test, readFromIn1)
 {
   /*********************HMC5883L Z axis Raw********************/
     int readDeviceReturn = readDevice(pPath, "/in_magn_z_raw");
@@ -47,7 +70,7 @@ TEST_F(read-acs-mag_Test, readFromMagZ)
 }
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_magn_range" device
-TEST_F(read-acs-mag_Test, readFromMagRange)
+TEST_F(read-acs-mag_Test, readFromPower1)
 {
   /*********************HMC5883L Range********************/
     int readDeviceReturn = readDevice(pPath, "/in_magn_range");
@@ -59,7 +82,7 @@ TEST_F(read-acs-mag_Test, readFromMagRange)
 }
 
 // Test that the readDevice function returns success when passed the correct pPath and "/in_magn_scale" device
-TEST_F(read-acs-mag_Test, readFromMagScale)
+TEST_F(read-acs-mag_Test, readFromPower1)
 {
   /*********************HMC5883L Scale********************/
     int readDeviceReturn = readDevice(pPath, "/in_magn_scale");

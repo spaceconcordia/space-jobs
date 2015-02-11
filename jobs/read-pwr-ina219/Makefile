@@ -23,5 +23,5 @@ buildBin: make-directories
 buildQ6: make-directories
 	$(MICROCC) $(MICROCFLAGS) $(INCPATH) $(LIBPATH) src/*.cpp -o bin/$(JOB_NAME) $(Q6_LIBS)
 
-make-directories: 
+make-directories:
 	mkdir -p bin

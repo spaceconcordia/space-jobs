@@ -8,7 +8,7 @@
 #include <sys/fcntl.h>
 #include <SpaceDecl.h>
 #include <shakespeare.h>
-#include </home/samsara/CONSAT1/space-lib/utls/include/i2c-device.h>
+#include "i2c-device.h"
 #include "../inc/read-temp-EBPL.h"
 #define LOG_DIR "/home/logs/"
 #define PROCESS_PATH "AD7998x22PATH"
@@ -29,10 +29,11 @@ char readBuff[100];
 int main()
 {
 	int exitStatus=0;
-	char* pPath = getenv("");
+	char* pPath = getenv(PROCESS_PATH);
+printf("%s",pPath);
 
-	/*********************AD7998 Temperature Sensor 0********************/
-	readDevice(pPath, PROCESS_PATH);
+    /*********************AD7998 Temperature Sensor 0********************/
+//	readDevice(pPath, PROCESS_PATH);
 	/*****************************************************************************/
 
 	/*********************AD7998 Temperature Sensor 1********************/

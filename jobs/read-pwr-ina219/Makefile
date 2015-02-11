@@ -9,7 +9,7 @@ SPACE_LIB=$(PROJECT_DIR)/space-lib
 SHAKESPEARE_PATH=$(SPACE_LIB)/shakespeare
 UTLS_PATH=$(SPACE_LIB)/utls
 
-INCPATH=-I./include/ -I$(SHAKESPEARE_PATH)/inc -I$(SPACE_LIB)/include
+INCPATH=-I./include/ -I$(SHAKESPEARE_PATH)/inc -I$(SPACE_LIB)/include -I$(UTLS_PATH)/include
 INCTESTPATH=-I./tests/unit/stubs/ -I./tests/helpers/include/
 LIBPATH=-L./lib/ -L$(SHAKESPEARE_PATH)/lib -L$(UTLS_PATH)/lib
 PC_LIBS=-lshakespeare -lcs1_utls

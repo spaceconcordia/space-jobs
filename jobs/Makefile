@@ -8,7 +8,7 @@ PROJECT_DIR=../../
 SHAKESPEARE_PATH=$(PROJECT_DIR)/space-lib/shakespeare
 UTLS_PATH=$(PROJECT_DIR)/space-lib/utls
 
-INCPATH=-I./include/ -I$(SHAKESPEARE_PATH)/inc
+INCPATH=-I./include/ -I$(SHAKESPEARE_PATH)/inc 
 INCTESTPATH=-I./tests/unit/stubs/ -I./tests/helpers/include/
 LIBPATH=-L./lib/ -L$(SHAKESPEARE_PATH)/lib -L$(UTLS_PATH)/lib
 PC_LIBS=-lshakespeare -lcs1_utls

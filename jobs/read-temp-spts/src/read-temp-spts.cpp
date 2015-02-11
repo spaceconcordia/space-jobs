@@ -7,7 +7,7 @@
 #include <sys/ioctl.h>
 #include <sys/fcntl.h>
 #include <shakespeare.h>
-#include </home/samsara/CONSAT1/space-lib/utls/include/i2c-device.h>
+#include <i2c-device.h>
 #include "../inc/read-temp-spts.h"
 #define LOG_DIR "/home/logs/"
 #define PROCESS_PATH "AD7998x21PATH"

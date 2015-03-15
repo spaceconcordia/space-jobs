@@ -8,7 +8,6 @@
 #include <sys/fcntl.h>
 #include <shakespeare.h>
 #include "i2c-device.h"
-#include "../inc/read-pwr-ina219.h"
 #define LOG_DIR "/home/logs/"
 #define PROCESS_NAME "telemetryINA219"
 #define PROCESS_PATH "INA2XXPATH"
@@ -50,21 +49,4 @@ int main()
 
 	return exitStatus;
 
-}
-
-int readDevice (char* pPath, const char* deviceName) {
-	if(pPath == NULL)
-		return NULL_PATH_ERROR;
-
-	if (deviceName == NULL)
-		return NULL_DEVICENAME_ERROR;
-
-	char result[100];
-	strcpy(result,pPath); // copy string one into the result.
-	strcat(result,deviceName);
-	I2CRead(result,readBuff);
-	short int temp_data = strtol(readBuff,NULL,0);
-	Shakespeare::log_bin(Shakespeare::NOTICE,process_id,temp_data);
-
-	return CS1_SUCCESS;
 }
